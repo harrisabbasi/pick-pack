@@ -144,7 +144,19 @@ class Pick_Pack_Public {
 		   }
 		}
 
-		if (count($fragile) != 0 || count($large) != 0){
+		$remove_eco_bag = false;
+		$cart_count = count(WC()->cart->get_cart());
+		if ($cart_count == 1 ){
+			foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) {
+				# code...
+				if ($cart_item['product_id'] == $product_id){
+					$remove_eco_bag = true;
+				}
+
+			}
+		}
+
+		if (count($fragile) != 0 || count($large) != 0 || $remove_eco_bag){
 			foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
 			     if ( $cart_item['product_id'] == $product_id ) {
 			          WC()->cart->remove_cart_item( $cart_item_key );
@@ -247,4 +259,12 @@ class Pick_Pack_Public {
 		return array_diff( $related_posts, $exclude_ids );
 	}
 
+	public function order_payment_complete($order_id){
+		$order = wc_get_order( $order_id );
+
+		file_put_contents(get_template_directory() . '/somefilename.txt', print_r($order->get_items(), true), FILE_APPEND);
+	}
+
 }
+
+

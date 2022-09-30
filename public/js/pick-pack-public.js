@@ -35,8 +35,8 @@ jQuery( document ).ready(function() {
 
 	jQuery(document).on('click', '.toggle-2', function(event) {
 		event.preventDefault();		
-		var target = jQuery(this).data('target');
-		jQuery('.' + target).show();
+		/*var target = jQuery(this).data('target');
+		jQuery('.' + target).show();*/
 		location.reload();
 	});
 	//not being used
