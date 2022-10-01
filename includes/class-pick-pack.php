@@ -177,6 +177,7 @@ class Pick_Pack {
 		$this->loader->add_action( 'pre_get_posts', $plugin_public, 'remove_bag_from_query', 20 );
 		$this->loader->add_filter( 'woocommerce_related_products', $plugin_public, 'filter_bag_from_related_products', 10, 3 );
 		$this->loader->add_action( 'woocommerce_checkout_order_processed', $plugin_public, 'order_payment_complete');
+		$this->loader->add_action( 'woocommerce_before_calculate_totals', $plugin_public, 'change_cart_item_quantities', 20, 1);
 		$this->loader->add_action( 'woocommerce_before_cart_table', $plugin_public, 'pick_pack_add_model', 10 );
 		$this->loader->add_action( 'woocommerce_cart_item_removed', $plugin_public, 'pick_pack_remove_item_from_cart', 11, 2 );
         $this->loader->add_action( 'wp_ajax_pick_pack_add_to_cart_product', $plugin_public, 'pick_pack_add_to_cart_product_callback' );

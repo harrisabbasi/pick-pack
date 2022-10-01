@@ -121,7 +121,7 @@ class Pick_Pack_Public {
 
 		$fragile = [];
 		$large = [];
-
+		//Find out if there is a fragile or large product
 		foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
 		   
 		   $product_id_2 = $cart_item['product_id'];
@@ -143,7 +143,7 @@ class Pick_Pack_Public {
 		   
 		   }
 		}
-
+		//If the only remaining product is eco bag
 		$remove_eco_bag = false;
 		$cart_count = count(WC()->cart->get_cart());
 		if ($cart_count == 1 ){
@@ -154,6 +154,16 @@ class Pick_Pack_Public {
 				}
 
 			}
+		}
+
+		//Get the eco bag key
+		$eco_bag_key = '';
+		foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) {
+			# code...
+			if ($cart_item['product_id'] == $product_id){
+				$eco_bag_key = $cart_item_key; 
+			}
+
 		}
 
 		if (count($fragile) != 0 || count($large) != 0 || $remove_eco_bag){
@@ -276,6 +286,64 @@ class Pick_Pack_Public {
 			}
 		}
 		/*file_put_contents(get_template_directory() . '/somefilename.txt', print_r($order->get_items(), true), FILE_APPEND);*/
+	}
+
+	public function change_cart_item_quantities($cart) {
+    
+    if ( is_admin() && ! defined( 'DOING_AJAX' ) )
+        return;
+
+    if ( did_action( 'woocommerce_before_calculate_totals' ) >= 2 )
+        return;
+
+    // HERE below define your specific products IDs
+    $specific_ids = array(get_option("pick_pack_product"));
+    $new_qty = $this->get_eco_bag_quantity($cart); // New quantity
+
+    // Checking cart items
+    foreach( $cart->get_cart() as $cart_item_key => $cart_item ) {
+        $product_id = $cart_item['data']->get_id();
+        // Check for specific product IDs and change quantity
+        if( in_array( $product_id, $specific_ids ) && $cart_item['quantity'] != $new_qty ){
+            $cart->set_quantity( $cart_item_key, $new_qty ); // Change quantity
+        }
+    }
+
+	}
+
+	public function get_eco_bag_quantity($cart){
+		$remainder = 0;
+		$wholesome_bags = 0;
+
+		foreach( $cart->get_cart() as $cart_item_key => $cart_item ) {
+		    $product_id = $cart_item['data']->get_id();
+
+		    if (get_option("pick_pack_product") == $product_id){
+		    	continue;
+		    }
+		    
+		    $taxonomy = 'product_cat';
+		    $categories = get_the_terms($product_id, 'product_cat');
+
+		    $product_per_bag = get_option('product_per_bag_' . $categories[0]->term_id, 1);
+
+		    $item_bags = $cart_item['quantity'] / $product_per_bag;
+
+		    if ($item_bags < 1){
+		    	$remainder += $item_bags;
+		    }
+		    else{
+		    	$wholesome_bags += floor($item_bags);
+		    	$remainder += ($cart_item['quantity'] % $product_per_bag) / $product_per_bag;
+		    }
+
+		    	
+		}
+
+		$wholesome_bags += ceil($remainder);
+
+		return $wholesome_bags;
+
 	}
 
 }

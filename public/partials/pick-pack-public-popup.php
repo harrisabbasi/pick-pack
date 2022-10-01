@@ -67,6 +67,12 @@ if(!$this->pick_pack_woo_in_cart($product_id) && count($fragile) == 0 && count($
             
             location.reload();
         });*/
+        jQuery('input[name="cart[<?php echo $eco_bag_key ?>][qty]"]').prop('disabled', true);
+
+        jQuery( document.body ).on( 'updated_cart_totals', function(){
+            jQuery('input[name="cart[<?php echo $eco_bag_key ?>][qty]"]').prop('disabled', true);
+            
+        });
 
         <?php
             // if(!isset($_SESSION["pick_pack_product_added"]) && $_SESSION["pick_pack_product_added"] == "" && !woo_in_cart($product_id)){
