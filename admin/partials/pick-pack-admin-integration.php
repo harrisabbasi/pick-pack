@@ -83,6 +83,17 @@
                                             <textarea name="pick_pack_product_text" class="pick_pack_input" id="" cols="30" rows="10"><?php if(isset($product_description) && !empty($product_description)){ echo $product_description; } ?></textarea>
                                         </div>
                                     </div>
+                                    
+                                    <?php foreach ($category_array as $category) { ?>
+                                    <div class="row pt-4">
+                                        <div class="col-lg-2 col-sm-12">
+                                            <h5 class="pick_pack_title">Number of <?php echo $category['category_name'] ?> per Eco bag</h5>
+                                        </div>
+                                        <div class="col-lg-5 col-sm-12">
+                                            <input type="number" name="product_per_bag_<?php echo $category['category_id'] ?>" class="pick_pack_input"  value="<?php  echo $category['category_value'] ?>" placeholder="Products per bag" >
+                                        </div>
+                                    </div>
+                                <?php } ?>
                                     <div class="row pt-4">
                                         <div class="col-lg-2 col-sm-12"></div>
                                         <div class="col-lg-5 col-sm-12">

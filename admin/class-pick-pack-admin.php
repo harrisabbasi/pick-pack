@@ -200,6 +200,23 @@ class Pick_Pack_Admin {
 				update_option("pick_pack_product_image_upload", $_POST["pick_pack_product_image_upload"]);
 				update_option("pick_pack_product_title", $_POST["pick_pack_product_title"]);
 				update_option("pick_pack_product_text", $_POST["pick_pack_product_text"]);
+
+				$taxonomy = 'product_cat';
+				$categories_2 = get_categories(array('taxonomy' => $taxonomy, 'hide_empty' => false));
+				
+				//Remove fragile and large from list
+				foreach( $categories_2 as $key => $category ) {
+				
+					if ($category->name == "Large Product" || $category->name == "Fragile Product"){
+						unset($categories[$key]);
+					}
+				}
+
+				foreach ($categories_2 as $key => $category) {
+					if (isset($_POST['product_per_bag_' . $category->term_id])){
+						update_option('product_per_bag_' . $category->term_id, $_POST['product_per_bag_' . $category->term_id]);
+					}
+				}
 			}	
 		}
 
@@ -207,6 +224,7 @@ class Pick_Pack_Admin {
 		$product_title = get_option("pick_pack_product_title");
 		$product_description = get_option("pick_pack_product_text");
 
+		
 		if (!function_exists('get_plugins')) {
             include_once ABSPATH . 'wp-admin/includes/plugin.php';
         }
@@ -222,6 +240,24 @@ class Pick_Pack_Admin {
 
 
 		if (is_plugin_active($basename)){
+
+			$taxonomy = 'product_cat';
+			$categories = get_categories(array('taxonomy' => $taxonomy, 'hide_empty' => false));
+			
+			//Remove fragile and large from list
+			foreach( $categories as $key => $category ) {
+			
+				if ($category->name == "Large Product" || $category->name == "Fragile Product"){
+					unset($categories[$key]);
+				}
+			}
+			// Retrieve the option values from database
+			$category_array = [];
+
+			foreach ($categories as $category) {
+
+				$category_array[] = array('category_id' => $category->term_id, 'category_value' => get_option('product_per_bag_' . $category->term_id, 1), 'category_name' => $category->name);
+			}
 
 			$args = array(
 			    'category' => array( 'Large Product' ),
