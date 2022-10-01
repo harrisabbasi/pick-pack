@@ -109,6 +109,11 @@
                         <div class="tab-content ">
 
                             <!-- Model changes -->
+
+                            <h2>Number of Eco Bags sold</h2>
+                            
+                            <?php echo $eco_bags_sold . '<br>'; ?>
+                            
                             
                             <h2>Large Products: </h2>
                             <?php foreach ($products as $product) {

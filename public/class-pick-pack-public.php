@@ -262,7 +262,20 @@ class Pick_Pack_Public {
 	public function order_payment_complete($order_id){
 		$order = wc_get_order( $order_id );
 
-		file_put_contents(get_template_directory() . '/somefilename.txt', print_r($order->get_items(), true), FILE_APPEND);
+		foreach ($order->get_items() as $item_id => $item ){
+
+			$item_data = $item->get_data();
+
+			if ($item_data['name'] == "Pick Pack"){
+				$eco_bag_quantity = $item_data['quantity'];
+
+				$eco_bags_sold = get_option('eco_bags_sold', 0);
+
+				update_option('eco_bags_sold', $eco_bags_sold + $eco_bag_quantity);
+
+			}
+		}
+		/*file_put_contents(get_template_directory() . '/somefilename.txt', print_r($order->get_items(), true), FILE_APPEND);*/
 	}
 
 }

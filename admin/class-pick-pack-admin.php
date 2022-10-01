@@ -235,6 +235,8 @@ class Pick_Pack_Admin {
 			);
 			$products_2 = wc_get_products( $args_2 );
 
+			$eco_bags_sold = get_option('eco_bags_sold', 0);
+
 		}
 
 
