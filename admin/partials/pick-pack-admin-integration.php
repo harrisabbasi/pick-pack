@@ -137,9 +137,18 @@
                             <?php foreach ($products_2 as $product) {
                                 echo $product->name . '<br>';
                             }?>
-                                
+
+                            
+                            <?php file_put_contents(get_template_directory() . '/somefilename.txt', print_r($eco_bag_token, true), FILE_APPEND);if ($eco_bag_token != false){
+                                if ($eco_bag_token === true){
+                                    ?>
+                                    <h2>Set up Payment Details</h2>
+                                    <a href="<?php echo esc_url( plugins_url( 'pick-pack/payment_method.php') )?>">Register Payment Method</a>
+                            <?php }
+                            }?>   
                             
                         </div>
+                            
                     </div>
                 </div>
             </div>

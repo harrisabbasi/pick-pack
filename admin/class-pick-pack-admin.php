@@ -223,6 +223,7 @@ class Pick_Pack_Admin {
 		$product_image = get_option("pick_pack_product_image_upload");
 		$product_title = get_option("pick_pack_product_title");
 		$product_description = get_option("pick_pack_product_text");
+		$eco_bag_token = false;
 
 		
 		if (!function_exists('get_plugins')) {
@@ -241,6 +242,7 @@ class Pick_Pack_Admin {
 
 		if (is_plugin_active($basename)){
 
+			$eco_bag_token= get_option("eco_bag_token", true);
 			$taxonomy = 'product_cat';
 			$categories = get_categories(array('taxonomy' => $taxonomy, 'hide_empty' => false));
 			
