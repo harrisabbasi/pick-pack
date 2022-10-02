@@ -143,7 +143,10 @@
                                 if ($eco_bag_token === true){
                                     ?>
                                     <h2>Set up Payment Details</h2>
-                                    <a href="<?php echo esc_url( plugins_url( 'pick-pack/payment_method.php') )?>">Register Payment Method</a>
+                                    <form method="POST" action="<?php echo esc_url(plugins_url('/pick-pack/payment_method.php')) ?>">
+                                        <?php wp_nonce_field('my-nonce'); ?>
+                                        <button type="submit" class="pick_pack_buttons_hover">Register Payment Method</button>
+                                    </form>
                             <?php }
                             }?>   
                             
