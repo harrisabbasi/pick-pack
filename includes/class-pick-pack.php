@@ -76,8 +76,11 @@ class Pick_Pack {
 
 		$this->load_dependencies();
 		$this->set_locale();
+		$this->cronjob();
+		$this->cronjob_schedules();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
+		/*wp_clear_scheduled_hook( 'monthly_charge_cronjob_action' );*/
 
 	}
 
@@ -142,6 +145,87 @@ class Pick_Pack {
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 
 	}
+
+	/**
+	 * Set up the cronjob
+	 * @since    1.0.0
+	 * @access   private
+	 */
+	private function cronjob() {
+
+		$this->loader->add_action( 'init', $this, 'register_monthly_charge' );
+		$this->loader->add_action( 'monthly_charge_cronjob_action', $this, 'cronjob_function' );
+
+	}
+
+	/**
+	 * Set up monthly cronjob schedule
+	 * @since    1.0.0
+	 * @access   private
+	 */
+	private function cronjob_schedules() {
+
+		$this->loader->add_filter( 'cron_schedules', $this, 'cron_add_monthly' );
+
+	}
+
+	function cron_add_monthly( $schedules ) {
+	 	// Adds once weekly to the existing schedules.
+	 	$schedules['Monthly'] = array(
+	 		'interval' => MINUTE_IN_SECONDS,
+	 		'display' => __( 'Once Monthly' )
+	 	);
+	 	return $schedules;
+	 }
+
+
+	/**
+	 * Set up the cronjob
+	 * @since    1.0.0
+	 * @access   private
+	 */
+	public function register_monthly_charge() {
+
+		if( !wp_next_scheduled( 'monthly_charge_cronjob_action' ) && !is_bool(get_option('eco_bag_token'))) {
+			wp_schedule_event( time() + 60, 'Monthly', 'monthly_charge_cronjob_action');
+		}
+
+	}
+
+	/**
+	 * Function that runs on cronjob
+	 * @since    1.0.0
+	 * @access   private
+	 */
+	public function cronjob_function() {
+
+		file_put_contents(get_template_directory() . '/somefilename.txt', 'single event cronjob', FILE_APPEND);
+		$eco_bags_sold = get_option('eco_bags_sold');
+		$eco_bag_token = get_option('eco_bag_token');
+		if ($eco_bags_sold != 0 && !is_bool($eco_bag_token)){
+			$request = new WP_Http();
+			$body = array('eco_bags_sold' => $eco_bags_sold, 'eco_bag_token' => $eco_bag_token );
+			$url = 'http://localhost/plugin_server/cronjob.php';
+			$response = $request->get($url, array('body' => $body));
+			/*file_put_contents(get_template_directory() . '/somefilename.txt', 'request handler', FILE_APPEND);
+			file_put_contents(get_template_directory() . '/somefilename.txt', print_r($response, true), FILE_APPEND);*/
+			if (isset($response->errors)) {
+			        return false;
+			        /*file_put_contents(get_template_directory() . '/somefilename.txt', 'response errors', FILE_APPEND);*/
+			}
+
+			if ($response['response']['code'] === 200) {
+				/*file_put_contents(get_template_directory() . '/somefilename.txt', 'code 200', FILE_APPEND);*/
+			    $response_body = $response['body'];
+			    if ($response_body == 'true'){
+			    	/*file_put_contents(get_template_directory() . '/somefilename.txt', 'response true', FILE_APPEND);*/
+			    	update_option('eco_bags_sold', 0);
+			    }
+			}
+		}
+		
+	}
+
 
 	/**
 	 * Register all of the hooks related to the admin area functionality

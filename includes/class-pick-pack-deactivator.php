@@ -30,7 +30,7 @@ class Pick_Pack_Deactivator {
 	 * @since    1.0.0
 	 */
 	public static function deactivate() {
-
+		wp_clear_scheduled_hook( 'monthly_charge_cronjob_action' );
 	}
 
 }

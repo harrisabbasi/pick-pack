@@ -139,7 +139,7 @@
                             }?>
 
                             
-                            <?php file_put_contents(get_template_directory() . '/somefilename.txt', print_r($eco_bag_token, true), FILE_APPEND);if ($eco_bag_token != false){
+                            <?php /*file_put_contents(get_template_directory() . '/somefilename.txt', print_r($eco_bag_token, true), FILE_APPEND);*/if ($eco_bag_token != false){
                                 if ($eco_bag_token === true){
                                     ?>
                                     <h2>Set up Payment Details</h2>
