@@ -217,13 +217,20 @@ class Pick_Pack_Admin {
 						update_option('product_per_bag_' . $category->term_id, $_POST['product_per_bag_' . $category->term_id]);
 					}
 				}
+
+				if (isset($_POST["pick_pack_token"])){
+					update_option('temp_eco_bag_token', $_POST["pick_pack_token"]);
+				}
+
+
 			}	
 		}
 
 		$product_image = get_option("pick_pack_product_image_upload");
 		$product_title = get_option("pick_pack_product_title");
 		$product_description = get_option("pick_pack_product_text");
-		$eco_bag_token = false;
+		/*$eco_bag_token = false;*///eco bag token
+		/*$pick_pack_token = false;*///temp eco bag token
 
 		
 		if (!function_exists('get_plugins')) {
@@ -243,6 +250,7 @@ class Pick_Pack_Admin {
 		if (is_plugin_active($basename)){
 
 			$eco_bag_token= get_option("eco_bag_token", true);
+			$pick_pack_token= get_option("temp_eco_bag_token", true);
 			$taxonomy = 'product_cat';
 			$categories = get_categories(array('taxonomy' => $taxonomy, 'hide_empty' => false));
 			
@@ -275,10 +283,14 @@ class Pick_Pack_Admin {
 
 			$eco_bags_sold = get_option('eco_bags_sold', 0);
 
+			require_once( plugin_dir_path( __FILE__ ) . 'partials/pick-pack-admin-integration.php');
+		}
+		else{
+			echo 'Please install WooCommerce to use Pick Pack Plugin';
 		}
 
 
-        require_once( plugin_dir_path( __FILE__ ) . 'partials/pick-pack-admin-integration.php');
+        
     }
 
 	/**

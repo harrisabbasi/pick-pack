@@ -95,6 +95,27 @@
                                     </div>
                                 <?php } ?>
                                     <div class="row pt-4">
+                                        <div class="col-lg-2 col-sm-12">
+                                            <h5 class="pick_pack_title">Insert your token here that is used to add and update payment method</h5>
+                                        </div>
+                                        <div class="col-lg-5 col-sm-12">
+                                            <input type="text" name="pick_pack_token" class="pick_pack_input"  value="<?php if(isset($pick_pack_token) && !empty($pick_pack_token)){ echo $pick_pack_token; } ?>" placeholder="Pick Pack Token" >
+                                        </div>
+                                    </div>
+
+                                    <?php 
+                                    if ($pick_pack_token !== $eco_bag_token) {?>
+                                    
+                                    <div class="row pt-4">
+                                        <div class="col-lg-2 col-sm-12">
+                                            <h5 class="pick_pack_title">Get Token from our server</h5>
+                                        </div>
+                                        <div class="col-lg-5 col-sm-12">
+                                            <a href = 'http://localhost/plugin_server/token.php' class="pick_pack_buttons_hover" target="_blank" >Go to Link</a>
+                                        </div>
+                                    </div>
+                                <?php } ?>
+                                    <div class="row pt-4">
                                         <div class="col-lg-2 col-sm-12"></div>
                                         <div class="col-lg-5 col-sm-12">
                                             <button type="submit" class="pick_pack_buttons_hover">Save</button>
@@ -147,7 +168,16 @@
                                         <?php wp_nonce_field('my-nonce'); ?>
                                         <button type="submit" class="pick_pack_buttons_hover">Register Payment Method</button>
                                     </form>
-                            <?php }
+                            <?php } else{ ?>
+
+                                <h2>Update Payment Details</h2>
+                                <form method="POST" action="<?php echo esc_url(plugins_url('/pick-pack/payment_method.php')) ?>">
+                                    <?php wp_nonce_field('my-nonce'); ?>
+                                    <input type="hidden" name="token_update" value="true">
+                                    <button type="submit" class="pick_pack_buttons_hover">Update Payment Method</button>
+                                </form>
+                                <?php
+                                }
                             }?>   
                             
                         </div>
