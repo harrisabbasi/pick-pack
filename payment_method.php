@@ -19,10 +19,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 	$return_url = plugins_url('/pick-pack/payment_method.php');
 
 	if ($_POST['token_update']=== 'true'){
-		$URL = 'http://localhost/plugin_server/index.php?eco_bag_token=' . $token . '&return_url=' . urlencode($return_url) . '&action=update';
+		$URL = SERVER_URL . 'index.php?eco_bag_token=' . $token . '&return_url=' . urlencode($return_url) . '&action=update';
 	}
 	else{
-		$URL = 'http://localhost/plugin_server/index.php?eco_bag_token=' . $token . '&return_url=' . urlencode($return_url);
+		$URL = SERVER_URL . 'index.php?eco_bag_token=' . $token . '&return_url=' . urlencode($return_url);
 	}
 	
 	header('Location: '. $URL);

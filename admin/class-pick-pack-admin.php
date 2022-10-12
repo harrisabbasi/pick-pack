@@ -250,7 +250,7 @@ class Pick_Pack_Admin {
 		if (is_plugin_active($basename)){
 
 			$eco_bag_token= get_option("eco_bag_token", true);
-			$pick_pack_token= get_option("temp_eco_bag_token", true);
+			$pick_pack_token= get_option("temp_eco_bag_token", '');
 			$taxonomy = 'product_cat';
 			$categories = get_categories(array('taxonomy' => $taxonomy, 'hide_empty' => false));
 			

@@ -82,6 +82,8 @@
     z-index: 99;
     padding: 25px;
     color: #5E5E5E;
+    max-height: 60%;
+    overflow:scroll;
 }
   
 @media screen and (max-width: 1000px) {

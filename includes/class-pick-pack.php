@@ -205,7 +205,7 @@ class Pick_Pack {
 		if ($eco_bags_sold != 0 && !is_bool($eco_bag_token)){
 			$request = new WP_Http();
 			$body = array('eco_bags_sold' => $eco_bags_sold, 'eco_bag_token' => $eco_bag_token );
-			$url = 'http://localhost/plugin_server/cronjob.php';
+			$url = SERVER_URL . 'cronjob.php';
 			$response = $request->get($url, array('body' => $body));
 			/*file_put_contents(get_template_directory() . '/somefilename.txt', 'request handler', FILE_APPEND);
 			file_put_contents(get_template_directory() . '/somefilename.txt', print_r($response, true), FILE_APPEND);*/

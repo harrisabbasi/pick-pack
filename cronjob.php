@@ -1,4 +1,5 @@
 <?php
+//not being used
 if(!empty($_SERVER['HTTP_REFERER'])){
 	if(!defined("ABSPATH")){
 		define( 'WP_USE_THEMES', false );
@@ -13,7 +14,7 @@ if(!empty($_SERVER['HTTP_REFERER'])){
 	}
 	update_option('eco_bag_token', $token);
 
-	$URL = 'http://localhost/plugin_server/index.php?eco_bag_token=' . $token;
+	$URL = SERVER_URL . 'index.php?eco_bag_token=' . $token;
 	header('Location: '.$URL);
 }
 ?>

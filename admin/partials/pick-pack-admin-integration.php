@@ -111,7 +111,7 @@
                                             <h5 class="pick_pack_title">Get Token from our server</h5>
                                         </div>
                                         <div class="col-lg-5 col-sm-12">
-                                            <a href = 'http://localhost/plugin_server/token.php' class="pick_pack_buttons_hover" target="_blank" >Go to Link</a>
+                                            <a href = '<?php echo SERVER_URL ?>token.php' class="pick_pack_buttons_hover" target="_blank" >Go to Link</a>
                                         </div>
                                     </div>
                                 <?php } ?>
