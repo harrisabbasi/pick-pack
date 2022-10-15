@@ -243,6 +243,8 @@ class Pick_Pack {
 		$this->loader->add_action('admin_init', $plugin_admin, 'pick_pack_check_woocommerce_is_active');
 		$this->loader->add_action('admin_init', $plugin_admin, 'add_two_categories');
 		$this->loader->add_action('admin_menu', $plugin_admin, 'pick_pack_add_admin_menu');
+		$this->loader->add_action('admin_post_pick_pack_payment', $plugin_admin, 'pick_pack_payment');
+		/*$this->loader->add_action('admin_post_nopriv_pick_pack_payment', $plugin_admin, 'pick_pack_payment');*/
 	}
 
 	/**
@@ -266,6 +268,7 @@ class Pick_Pack {
 		$this->loader->add_action( 'woocommerce_cart_item_removed', $plugin_public, 'pick_pack_remove_item_from_cart', 11, 2 );
         $this->loader->add_action( 'wp_ajax_pick_pack_add_to_cart_product', $plugin_public, 'pick_pack_add_to_cart_product_callback' );
         $this->loader->add_action( 'wp_ajax_nopriv_pick_pack_add_to_cart_product', $plugin_public, 'pick_pack_add_to_cart_product_callback' );
+        $this->loader->add_action( 'template_redirect', $plugin_public, 'return_from_payment_method', 20 );
 
 	}
 

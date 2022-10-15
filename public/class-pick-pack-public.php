@@ -346,6 +346,25 @@ class Pick_Pack_Public {
 
 	}
 
+	public function return_from_payment_method(){
+
+		if (isset($_GET['token']) && isset($_GET['status'])){
+			if (get_option('temp_eco_bag_token') == $_GET['token'] && $_GET['status'] == 'success'){
+
+				update_option('eco_bag_token', $_GET['token']);
+				/*delete_option('temp_eco_bag_token');*/
+
+				exit( wp_redirect( get_dashboard_url() . 'admin.php?page=pick-pack&status=success' ));
+				/*header('Location: '. get_dashboard_url() . 'admin.php?page=pick-pack&status=success');*/
+			}
+			else{
+				/*header('Location: '. get_dashboard_url() . 'admin.php?page=pick-pack&status=failure');*/
+				exit( wp_redirect( get_dashboard_url() . 'admin.php?page=pick-pack&status=failure' ));
+			}
+		}
+
+	}
+
 }
 
 

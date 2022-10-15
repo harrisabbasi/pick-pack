@@ -341,5 +341,35 @@ class Pick_Pack_Admin {
     		
     }
 
+    /**
+     * Post request from payment method registration and update request
+     */
+    public function pick_pack_payment(){
+
+    	wp_verify_nonce($_POST['_wpnonce'], 'my-nonce');
+
+    	$token = get_option('temp_eco_bag_token');
+
+    	if ($token === false || empty($token)){
+    		echo 'Please insert your pick pack token in the dashboard and press save button';
+    		exit;
+    	}
+
+    	$return_url = get_home_url();
+
+    	if ($_POST['token_update']=== 'true'){
+    		$URL = SERVER_URL . 'index.php?eco_bag_token=' . $token . '&return_url=' . urlencode($return_url) . '&action=update';
+    	}
+    	else{
+    		$URL = SERVER_URL . 'index.php?eco_bag_token=' . $token . '&return_url=' . urlencode($return_url);
+    	}
+
+
+    	header('Location: '. $URL);
+    	
+
+
+   	}
+
 
 }
