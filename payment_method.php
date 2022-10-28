@@ -1,5 +1,5 @@
 <?php
-
+// not being used
 if(!defined("ABSPATH")){
 	define( 'WP_USE_THEMES', false );
 	require_once('../../../wp-load.php');

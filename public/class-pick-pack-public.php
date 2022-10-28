@@ -115,9 +115,9 @@ class Pick_Pack_Public {
 		session_start();
 		$product_id = get_option("pick_pack_product");
 
-		$product_image = get_option("pick_pack_product_image_upload");
+		/*$product_image = get_option("pick_pack_product_image_upload");
 		$product_title = get_option("pick_pack_product_title");
-		$product_description = get_option("pick_pack_product_text");
+		$product_description = get_option("pick_pack_product_text");*/
 
 		$fragile = [];
 		$large = [];
@@ -178,7 +178,7 @@ class Pick_Pack_Public {
 	}
 
 	/**
-	 * Add product into cart
+	 * Add product into cart. Handles the ajax request from the pop up modal
 	 */
 	public function pick_pack_add_to_cart_product_callback(){
 		
@@ -312,8 +312,8 @@ class Pick_Pack_Public {
 	}
 
 	public function get_eco_bag_quantity($cart){
-		$remainder = 0;
-		$wholesome_bags = 0;
+
+		$item_bags = 0;
 
 		foreach( $cart->get_cart() as $cart_item_key => $cart_item ) {
 		    $product_id = $cart_item['data']->get_id();
@@ -327,20 +327,20 @@ class Pick_Pack_Public {
 
 		    $product_per_bag = get_option('product_per_bag_' . $categories[0]->term_id, 1);
 
-		    $item_bags = $cart_item['quantity'] / $product_per_bag;
+		    $item_bags += $cart_item['quantity'] * $product_per_bag;
 
-		    if ($item_bags < 1){
+		    /*if ($item_bags < 1){
 		    	$remainder += $item_bags;
-		    }
-		    else{
+		    }*/
+		    /*else{
 		    	$wholesome_bags += floor($item_bags);
 		    	$remainder += ($cart_item['quantity'] % $product_per_bag) / $product_per_bag;
-		    }
+		    }*/
 
 		    	
 		}
 
-		$wholesome_bags += ceil($remainder);
+		$wholesome_bags = ceil($item_bags / 100);
 
 		return $wholesome_bags;
 

@@ -196,39 +196,38 @@ class Pick_Pack_Admin {
 
 
 		if($_SERVER["REQUEST_METHOD"]=="POST"){
-			if(isset($_POST["pick_pack_product_image_upload"]) && isset($_POST["pick_pack_product_title"]) && isset($_POST["pick_pack_product_text"])){
-				update_option("pick_pack_product_image_upload", $_POST["pick_pack_product_image_upload"]);
+			/*if(isset($_POST["pick_pack_product_image_upload"]) && isset($_POST["pick_pack_product_title"]) && isset($_POST["pick_pack_product_text"])){*/
+				/*update_option("pick_pack_product_image_upload", $_POST["pick_pack_product_image_upload"]);
 				update_option("pick_pack_product_title", $_POST["pick_pack_product_title"]);
-				update_option("pick_pack_product_text", $_POST["pick_pack_product_text"]);
+				update_option("pick_pack_product_text", $_POST["pick_pack_product_text"]);*/
 
-				$taxonomy = 'product_cat';
-				$categories_2 = get_categories(array('taxonomy' => $taxonomy, 'hide_empty' => false));
-				
-				//Remove fragile and large from list
-				foreach( $categories_2 as $key => $category ) {
-				
-					if ($category->name == "Large Product" || $category->name == "Fragile Product"){
-						unset($categories[$key]);
-					}
+			$taxonomy = 'product_cat';
+			$categories_2 = get_categories(array('taxonomy' => $taxonomy, 'hide_empty' => false));
+			
+			//Remove fragile and large from list
+			foreach( $categories_2 as $key => $category ) {
+			
+				if ($category->name == "Large Product" || $category->name == "Fragile Product"){
+					unset($categories[$key]);
 				}
+			}
 
-				foreach ($categories_2 as $key => $category) {
-					if (isset($_POST['product_per_bag_' . $category->term_id])){
-						update_option('product_per_bag_' . $category->term_id, $_POST['product_per_bag_' . $category->term_id]);
-					}
+			foreach ($categories_2 as $key => $category) {
+				if (isset($_POST['product_per_bag_' . $category->term_id])){
+					update_option('product_per_bag_' . $category->term_id, $_POST['product_per_bag_' . $category->term_id]);
 				}
+			}
 
-				if (isset($_POST["pick_pack_token"])){
-					update_option('temp_eco_bag_token', $_POST["pick_pack_token"]);
-				}
+			if (isset($_POST["pick_pack_token"])){
+				update_option('temp_eco_bag_token', $_POST["pick_pack_token"]);
+			}
+			
+		}	
+		/*}*/
 
-
-			}	
-		}
-
-		$product_image = get_option("pick_pack_product_image_upload");
+		/*$product_image = get_option("pick_pack_product_image_upload");
 		$product_title = get_option("pick_pack_product_title");
-		$product_description = get_option("pick_pack_product_text");
+		$product_description = get_option("pick_pack_product_text");*/
 		/*$eco_bag_token = false;*///eco bag token
 		/*$pick_pack_token = false;*///temp eco bag token
 
