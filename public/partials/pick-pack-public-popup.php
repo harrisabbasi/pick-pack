@@ -40,9 +40,14 @@ if(!$this->pick_pack_woo_in_cart($product_id) && count($fragile) == 0 && count($
                 <div class="popup_col">
                     <div class="cnt">
                         
-                        <p>Une solution à faible coût, mais à grand impact!
-                            PickPack est une solution très simple au problème toujours croissant des déchets d'emballage. PickPack réduit les déchets et permet d'économiser une grande quantité des émissions de CO2 par rapport aux emballages à usage unique. Ajoutez un PickPack à votre commande pour 3 $ et recevez vos marchandises dans un emballage réutilisable et écologique. Le retour est GRATUIT !
+                        <p>
                             Chez nous, nous pensons que le monde a besoin de meilleures solutions pour les emballages à usage unique. C'est pourquoi nous proposons désormais une alternative. Elle se nomme PickPack - un emballage de livraison réutilisable pour les commandes en ligne. Lorsque tu recevras ta commande, tu n'auras qu'à plier ton emballage au format lettre et le renvoyer dans une boite postale Poste Canada, tout simplement!
+                        </p>
+                        <p>
+                            PickPack est une solution très simple au problème toujours croissant des déchets d'emballage. PickPack réduit les déchets et permet d'économiser une grande quantité des émissions de CO2 par rapport aux emballages à usage unique. Ajoutez un PickPack à votre commande pour 3 $ et recevez vos marchandises dans un emballage réutilisable et écologique. Le retour est GRATUIT !
+                        </p>
+                        <p>
+                            Une solution à faible coût, mais à grand impact!
                         </p>
                         <div class="popup-footer">
                             <div class="footer-flex">
@@ -81,7 +86,7 @@ if(!$this->pick_pack_woo_in_cart($product_id) && count($fragile) == 0 && count($
             // if(!isset($_SESSION["pick_pack_product_added"]) && $_SESSION["pick_pack_product_added"] == "" && !woo_in_cart($product_id)){
             if(!$this->pick_pack_woo_in_cart($product_id) && count($fragile) == 0 && count($large) == 0){
                 ?>
-                    console.log('<?php echo $_SESSION["pick_pack_product_added"]; ?>');
+                    
                     /*jQuery(".toggle-2").show();*/
                     jQuery(".pick-pack-container").show();
                     /*jQuery('.overlay_pick_pack ').removeClass('hide');
