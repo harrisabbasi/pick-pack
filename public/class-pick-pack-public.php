@@ -143,9 +143,18 @@ class Pick_Pack_Public {
 		   
 		   }
 		}
-		//If the only remaining product is eco bag
+		
 		$remove_eco_bag = false;
 		$cart_count = count(WC()->cart->get_cart());
+		$fragile_count = count($fragile);
+		$large_count = count($large);
+		$pick_pack_count = 0;
+
+		if ($this->pick_pack_woo_in_cart($product_id)){
+			$pick_pack_count++;
+		}
+
+		//If the only remaining product is eco bag
 		if ($cart_count == 1 ){
 			foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) {
 				# code...
@@ -154,6 +163,11 @@ class Pick_Pack_Public {
 				}
 
 			}
+		}
+
+		//if only large or fragile products are present
+		if ($cart_count == ($fragile_count + $large_count + $pick_pack_count)){
+			$remove_eco_bag = true;
 		}
 
 		//Get the eco bag key
@@ -166,10 +180,11 @@ class Pick_Pack_Public {
 
 		}
 
-		if (count($fragile) != 0 || count($large) != 0 || $remove_eco_bag){
+		if ($remove_eco_bag){
 			foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
 			     if ( $cart_item['product_id'] == $product_id ) {
 			          WC()->cart->remove_cart_item( $cart_item_key );
+			          $cart_count--;
 			     }
 			}
 		}
@@ -227,14 +242,16 @@ class Pick_Pack_Public {
 	 * When item remove from cart
 	 */
 	public function pick_pack_remove_item_from_cart($cart_item_key, $cart){
-		/*session_start();
+		session_start();
 
-		$product_id = $cart->cart_contents[ $cart_item_key ]['product_id'];
+		$product_id = get_option('pick_pack_product');
+
 		if(!empty($_SESSION["pick_pack_product_added"]) && $_SESSION["pick_pack_product_added"] == $product_id ){
+			file_put_contents(get_template_directory() . '/somefilename.txt', 'unset', FILE_APPEND);
 			unset($_SESSION['pick_pack_product_added']);
 		}
 
-		exit;*/
+		
 	}	
 	//remove bag from query
 	public function remove_bag_from_query($query){
@@ -242,7 +259,7 @@ class Pick_Pack_Public {
 			
 			$product = null;
 
-			$product = get_page_by_title( 'Pick Pack', OBJECT, 'product' ); 
+			$product = get_page_by_title( 'Pick Pack', OBJECT, array('product') ); 
 
 
 			if ( ! is_null( $product) ){
@@ -258,7 +275,7 @@ class Pick_Pack_Public {
 
 		$product = null;
 
-		$product = get_page_by_title( 'Pick Pack', OBJECT, 'product' );
+		$product = get_page_by_title( 'Pick Pack', OBJECT, array('product'));
 
 		$exclude_ids = [];
 
@@ -298,13 +315,13 @@ class Pick_Pack_Public {
 
     // HERE below define your specific products IDs
     $specific_ids = array(get_option("pick_pack_product"));
-    $new_qty = $this->get_eco_bag_quantity($cart); // New quantity
 
     // Checking cart items
     foreach( $cart->get_cart() as $cart_item_key => $cart_item ) {
         $product_id = $cart_item['data']->get_id();
         // Check for specific product IDs and change quantity
-        if( in_array( $product_id, $specific_ids ) && $cart_item['quantity'] != $new_qty ){
+        if( in_array( $product_id, $specific_ids )){
+        	$new_qty = $this->get_eco_bag_quantity($cart); // New quantity
             $cart->set_quantity( $cart_item_key, $new_qty ); // Change quantity
         }
     }
@@ -340,7 +357,7 @@ class Pick_Pack_Public {
 		    	
 		}
 
-		$wholesome_bags = ceil($item_bags / 100);
+		$wholesome_bags = ceil($item_bags / 20);
 
 		return $wholesome_bags;
 
@@ -365,6 +382,56 @@ class Pick_Pack_Public {
 
 	}
 
+	public function country_option_checkout_page(){
+		
+		$product_id = get_option("pick_pack_product");
+		session_start();
+
+		/*file_put_contents(get_template_directory() . '/somefilename.txt', 'haris', FILE_APPEND);*/
+		if (WC()->checkout->get_value('billing_country') !== 'CA'){
+			/*file_put_contents(get_template_directory() . '/somefilename.txt', 'abbasi', FILE_APPEND);*/
+			if($this->pick_pack_woo_in_cart($product_id)){
+				foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
+			        if ( $cart_item['data']->get_id() == $product_id ) {
+
+			        	remove_action( 'woocommerce_cart_item_removed', array( 'Pick_Pack_Public', 'pick_pack_remove_item_from_cart' ), 10 );
+			        	WC()->cart->remove_cart_item( $cart_item_key );
+			         
+			     	}
+				}
+			}
+		}
+		else{
+			/*file_put_contents(get_template_directory() . '/somefilename.txt', 'yassar', FILE_APPEND);*/
+			if(!$this->pick_pack_woo_in_cart($product_id) /*&& !empty($_SESSION["pick_pack_product_added"]) && $_SESSION["pick_pack_product_added"] === $product_id*/){
+				/*file_put_contents(get_template_directory() . '/somefilename.txt', 'khan', FILE_APPEND);*/
+				$add = WC()->cart->add_to_cart( $product_id,1 );
+				if ($add){
+					$new_qty = $this->get_eco_bag_quantity(WC()->cart); // New quantity
+
+			    	foreach( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
+			    	    // Check for specific product IDs and change quantity
+			    	    if( $cart_item['product_id'] == $product_id ){
+			    	        
+			    	        WC()->cart->set_quantity( $cart_item_key, $new_qty ); // Change quantity
+
+			    	    }
+			    	    	
+			    	 }
+			    }
+			}
+		}
+
+			/*wp_send_json_success( 'It works' );*/
+	
+
+
+			
+	}
+	
+
 }
+
+
 
 
