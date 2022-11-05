@@ -242,14 +242,29 @@ class Pick_Pack_Public {
 	 * When item remove from cart
 	 */
 	public function pick_pack_remove_item_from_cart($cart_item_key, $cart){
-		session_start();
 
-		$product_id = get_option('pick_pack_product');
-
-		if(!empty($_SESSION["pick_pack_product_added"]) && $_SESSION["pick_pack_product_added"] == $product_id ){
-			file_put_contents(get_template_directory() . '/somefilename.txt', 'unset', FILE_APPEND);
-			unset($_SESSION['pick_pack_product_added']);
+		if (is_checkout()){
+			return;
 		}
+		session_start();
+		$product_id = get_option("pick_pack_product");
+
+
+		$line_item = $cart->removed_cart_contents[ $cart_item_key ];
+		$product_id_temp = $line_item[ 'product_id' ];
+
+		/*file_put_contents(get_template_directory() . '/somefilename.txt', print_r($product, true), FILE_APPEND);*/
+		if ($product_id == $product_id_temp){
+			
+			if(!empty($_SESSION["pick_pack_product_added"]) && $_SESSION["pick_pack_product_added"] == $product_id ){
+				/*file_put_contents(get_template_directory() . '/somefilename.txt', 'unset', FILE_APPEND);*/
+				unset($_SESSION['pick_pack_product_added']);
+			}
+		}
+		
+		/*$product_id = $cart->cart_contents[ $cart_item_key ]['product_id'];*/
+		
+		
 
 		
 	}	
@@ -394,7 +409,7 @@ class Pick_Pack_Public {
 				foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
 			        if ( $cart_item['data']->get_id() == $product_id ) {
 
-			        	remove_action( 'woocommerce_cart_item_removed', array( 'Pick_Pack_Public', 'pick_pack_remove_item_from_cart' ), 10 );
+			        	/*remove_action( 'woocommerce_cart_item_removed', array( 'Pick_Pack_Public', 'pick_pack_remove_item_from_cart' ), 10 );*/
 			        	WC()->cart->remove_cart_item( $cart_item_key );
 			         
 			     	}
@@ -403,7 +418,7 @@ class Pick_Pack_Public {
 		}
 		else{
 			/*file_put_contents(get_template_directory() . '/somefilename.txt', 'yassar', FILE_APPEND);*/
-			if(!$this->pick_pack_woo_in_cart($product_id) /*&& !empty($_SESSION["pick_pack_product_added"]) && $_SESSION["pick_pack_product_added"] === $product_id*/){
+			if(!$this->pick_pack_woo_in_cart($product_id) && !empty($_SESSION["pick_pack_product_added"]) && $_SESSION["pick_pack_product_added"] === $product_id){
 				/*file_put_contents(get_template_directory() . '/somefilename.txt', 'khan', FILE_APPEND);*/
 				$add = WC()->cart->add_to_cart( $product_id,1 );
 				if ($add){
