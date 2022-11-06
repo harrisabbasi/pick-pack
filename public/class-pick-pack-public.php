@@ -445,8 +445,25 @@ class Pick_Pack_Public {
 	}
 
 	public function curl_webhook_receive(){
-		if (isset($_GET['request']) && $_GET['request'] === 'curl'){
-			echo 'success';
+		if (isset($_GET['request']) && $_GET['request'] === 'curl' && SERVER_URL . 'dashboard/update.php' === $_SERVER['HTTP_REFERER']){
+			if (update_option('eco_bag_price', $_GET['price'])){
+
+				$_product = wc_get_product( get_option('pick_pack_product') );
+
+				if ($_product !== null && $_product !== false){
+
+					$_product->set_regular_price( $_GET['price'] );
+					$_product->save();
+					echo 'success';
+				}
+				else{
+					echo 'failure';
+				}
+				
+			}
+			else{
+				echo 'failure';
+			}
 			exit;
 		}
 	}

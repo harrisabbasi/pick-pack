@@ -152,6 +152,7 @@ class Pick_Pack_Admin {
 	public function pick_pack_create_product(){
 
 		$id = get_option('pick_pack_product');
+		$eco_bag_price = get_option('eco_bag_price');
 		
 		if(empty($id)){
 
@@ -166,11 +167,15 @@ class Pick_Pack_Admin {
 			if(! empty( $post_id )){
 	
 				update_option("pick_pack_product",$post_id);
+
+				if (empty($eco_bag_price)){
+					$eco_bag_price = 3;
+				}
 	
 				if ( function_exists( 'wc_get_product' ) ) {
 					$product = wc_get_product( $post_id );
 					$product->set_sku( 'pick-pack-' . $post_id );
-					$product->set_regular_price( '3' );
+					$product->set_regular_price( $eco_bag_price );
 					$product->save();
 				}
 			}
@@ -248,6 +253,7 @@ class Pick_Pack_Admin {
 
 		if (is_plugin_active($basename)){
 
+			$eco_bag_price = get_option('eco_bag_price');
 			$eco_bag_token= get_option("eco_bag_token", true);
 			$pick_pack_token= get_option("temp_eco_bag_token", '');
 			$taxonomy = 'product_cat';
@@ -312,6 +318,9 @@ class Pick_Pack_Admin {
 
 
 		if (is_plugin_active($basename)){
+
+			$this->custom_post_type();
+
     		//Get all product categories
     		$taxonomy = 'product_cat';
     		$categories = get_categories(array('taxonomy' => $taxonomy, 'hide_empty' => false));
@@ -368,6 +377,10 @@ class Pick_Pack_Admin {
     	
 
 
+   	}
+
+   	public function custom_post_type(){
+   		
    	}
 
 

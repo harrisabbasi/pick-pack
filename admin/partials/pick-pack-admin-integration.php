@@ -57,6 +57,7 @@
 
                             <!-- Model changes -->
                             <div class="tab-pane active" id="home" role="tabpanel">
+                                <h5>Eco Bag Price: <?php echo ($eco_bag_price !== false) ? $eco_bag_price : 'Not set'?></h5>
                                 <form action="" method="post">
                                     
                                     <?php foreach ($category_array as $category) { ?>
