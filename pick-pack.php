@@ -36,7 +36,8 @@ if ( ! defined( 'WPINC' ) ) {
  * Rename this for your plugin and update it as you release new versions.
  */
 define( 'PICK_PACK_VERSION', '1.0.0' );
-define( 'SERVER_URL', 'http://phpstack-851887-2938889.cloudwaysapps.com/wp-plugin-server/' );
+define( 'SERVER_URL', 'http://localhost/plugin_server/' );
+//http://phpstack-851887-2938889.cloudwaysapps.com/wp-plugin-server/
 if (!defined('PICK_PACK_ROOT'))
     define('PICK_PACK_ROOT', plugin_basename(__FILE__));
 

@@ -443,6 +443,13 @@ class Pick_Pack_Public {
 
 			
 	}
+
+	public function curl_webhook_receive(){
+		if (isset($_GET['request']) && $_GET['request'] === 'curl'){
+			echo 'success';
+			exit;
+		}
+	}
 	
 
 }
