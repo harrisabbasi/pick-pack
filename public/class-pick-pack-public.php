@@ -311,9 +311,26 @@ class Pick_Pack_Public {
 			if ($item_data['name'] == "Pick Pack"){
 				$eco_bag_quantity = $item_data['quantity'];
 
-				$eco_bags_sold = get_option('eco_bags_sold', 0);
+				$eco_bags_sold_array = get_option('eco_bags_sold', array());
+				$eco_bag_price = get_option('eco_bag_price', 0);
 
-				update_option('eco_bags_sold', $eco_bags_sold + $eco_bag_quantity);
+				$eco_bags_sold_array[] = array('price' => $eco_bag_price, 'quantity' => $eco_bag_quantity);
+
+				$option = update_option('eco_bags_sold', $eco_bags_sold_array);
+
+				if ($option){
+					$post_id = wp_insert_post(array(
+						'post_type' => 'pickpackorders',
+						'post_status' => 'publish',
+						'post_title' => 'Order with a Pick Pack Bag',
+						'meta_input' => array(
+							'price' => $eco_bag_price,
+							'quantity' => $eco_bag_quantity
+						)
+					));
+				}	
+
+				
 
 			}
 		}

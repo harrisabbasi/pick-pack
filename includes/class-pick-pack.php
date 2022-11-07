@@ -172,7 +172,7 @@ class Pick_Pack {
 	function cron_add_monthly( $schedules ) {
 	 	// Adds once weekly to the existing schedules.
 	 	$schedules['Monthly'] = array(
-	 		'interval' => MINUTE_IN_SECONDS,
+	 		'interval' => MINUTE_IN_SECONDS * 5,
 	 		'display' => __( 'Once Monthly' )
 	 	);
 	 	return $schedules;
@@ -200,18 +200,31 @@ class Pick_Pack {
 	public function cronjob_function() {
 
 		file_put_contents(get_template_directory() . '/somefilename.txt', 'single event cronjob', FILE_APPEND);
-		$eco_bags_sold = get_option('eco_bags_sold');
+
+		$eco_bags_sold_array = get_option('eco_bags_sold', array());
 		$eco_bag_token = get_option('eco_bag_token');
-		if ($eco_bags_sold != 0 && !is_bool($eco_bag_token)){
+
+		if (!empty($eco_bags_sold_array) && !is_bool($eco_bag_token)){
+
 			$request = new WP_Http();
+			$eco_bags_sold = 0;
+
+			foreach ($eco_bags_sold_array as $order) {
+
+				$eco_bags_sold += $order['price'] * $order['quantity'];
+			}
+			// eco_bags_sold is the total amount to be charged
 			$body = array('eco_bags_sold' => $eco_bags_sold, 'eco_bag_token' => $eco_bag_token );
 			$url = SERVER_URL . 'cronjob.php';
 			$response = $request->get($url, array('body' => $body));
+
 			/*file_put_contents(get_template_directory() . '/somefilename.txt', 'request handler', FILE_APPEND);
 			file_put_contents(get_template_directory() . '/somefilename.txt', print_r($response, true), FILE_APPEND);*/
+
 			if (isset($response->errors)) {
+
 			        return false;
-			        /*file_put_contents(get_template_directory() . '/somefilename.txt', 'response errors', FILE_APPEND);*/
+			        /*file_put_contents(get_template_directory() . '/somefilename.txt', print_r($response->errors, true), FILE_APPEND);*/
 			}
 
 			if ($response['response']['code'] === 200) {
@@ -219,7 +232,7 @@ class Pick_Pack {
 			    $response_body = $response['body'];
 			    if ($response_body == 'true'){
 			    	/*file_put_contents(get_template_directory() . '/somefilename.txt', 'response true', FILE_APPEND);*/
-			    	update_option('eco_bags_sold', 0);
+			    	update_option('eco_bags_sold', array());
 			    }
 			}
 		}
@@ -244,6 +257,9 @@ class Pick_Pack {
 		$this->loader->add_action('admin_init', $plugin_admin, 'add_two_categories');
 		$this->loader->add_action('admin_menu', $plugin_admin, 'pick_pack_add_admin_menu');
 		$this->loader->add_action('admin_post_pick_pack_payment', $plugin_admin, 'pick_pack_payment');
+		$this->loader->add_action('init', $plugin_admin, 'custom_post_type');
+		$this->loader->add_filter( 'manage_pickpackorders_posts_columns', $plugin_admin, 'add_custom_columns_orders_admin');
+		$this->loader->add_action('manage_pickpackorders_posts_custom_column', $plugin_admin, 'fill_custom_columns_orders_admin', 10, 2);
 		/*$this->loader->add_action('admin_post_nopriv_pick_pack_payment', $plugin_admin, 'pick_pack_payment');*/
 	}
 

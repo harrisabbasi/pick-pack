@@ -195,6 +195,8 @@ class Pick_Pack_Admin {
 			array($this,'pick_pack_package_admin_menu_function'),
 			plugins_url( 'pick-pack/assets/images/pick-pack-logo.png' )
 		);
+
+		add_submenu_page( 'pick-pack', 'Pick Pack Orders', 'Orders', 'manage_options','edit.php?post_type=pickpackorders');
 	}
 
 	public function pick_pack_package_admin_menu_function() {
@@ -380,7 +382,63 @@ class Pick_Pack_Admin {
    	}
 
    	public function custom_post_type(){
+
+   		register_post_type( 'pickpackorders',
+   		// CPT Options
+   		array(
+   		  'labels' => array(
+   		   'name' => __( 'Pick Pack Orders' ),
+   		   'singular_name' => __( 'Pick Pack Order' )
+   		  ),
+   		  'capability_type' => 'post',
+   		  'supports' => array(''
+   		  	
+   		  ),
+   		  'capabilities' => array(
+   		      'create_posts' => 'do_not_allow', // Removes support for the "Add New" function ( use 'do_not_allow' instead of false for multisite set ups )
+   		   ),
+   		  'map_meta_cap' => true,
+   		  'public' => true,
+   		  'has_archive' => false,
+   		  'rewrite' => array('slug' => 'pick-pack-orders'),
+   		  'show_in_menu' => 'edit.php?post_type=pickpackorders'
+   		 )
+   		);
    		
+   	}
+
+   	public function add_custom_columns_orders_admin($columns){
+   		return array_merge($columns, ['price' => __('Price', 'textdomain'), 'pick_pack_bags_sold' => __('Pick Pack Bags Sold', 'textdomain')]);
+
+   	}
+
+   	public function fill_custom_columns_orders_admin($column_key, $post_id){
+
+   		if ($column_key == 'price') {
+
+			$price = get_post_meta($post_id, 'price', true);
+
+			if (!$price || $price == '') {
+
+				echo '<span style="color:red;">'; _e('Not available', 'textdomain'); echo '</span>';
+			} else {
+
+				echo '<span style="color:green;">'; _e($price, 'textdomain'); echo '</span>';
+			}
+   		}
+
+   		if ($column_key == 'pick_pack_bags_sold') {
+
+			$eco_bags_sold = get_post_meta($post_id, 'quantity', true);
+
+			if (!$eco_bags_sold || $eco_bags_sold == '') {
+
+				echo '<span style="color:red;">'; _e('Not available', 'textdomain'); echo '</span>';
+			} else {
+
+				echo '<span style="color:green;">'; _e($eco_bags_sold, 'textdomain'); echo '</span>';
+			}
+   		}
    	}
 
 
