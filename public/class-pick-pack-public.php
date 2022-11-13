@@ -312,7 +312,7 @@ class Pick_Pack_Public {
 				$eco_bag_quantity = $item_data['quantity'];
 
 				$eco_bags_sold_array = get_option('eco_bags_sold', array());
-				$eco_bag_price = get_option('eco_bag_price', 0);
+				$eco_bag_price = get_option('eco_bag_price', 3);
 
 				$eco_bags_sold_array[] = array('price' => $eco_bag_price, 'quantity' => $eco_bag_quantity);
 
@@ -481,6 +481,37 @@ class Pick_Pack_Public {
 			else{
 				echo 'failure';
 			}
+			exit;
+		}
+	}
+
+	public function curl_eco_bag_orders(){
+		if (isset($_GET['request']) && $_GET['request'] === 'curl' && $_GET['type'] === 'orders' && SERVER_URL . 'dashboard/cronjob/cronjob_realtime.php' === $_SERVER['HTTP_REFERER']){
+
+			$orders = get_posts(array('post_type' => 'pickpackorders', 'numberposts' => -1));
+			$order_array = array();
+
+			if (count($orders) > 0){
+
+				foreach ($orders as $order) {
+
+					$price = get_post_meta($order->ID, 'price', true);
+					$eco_bags_sold = get_post_meta($order->ID, 'quantity', true);
+
+					$order_array[] = $order->ID . ' ' . $order->post_date . ' ' . $price . ' ' . $eco_bags_sold;
+
+					# code...
+				}
+
+				$string = implode('!', 	$order_array);
+
+				echo $string;
+			}
+
+			else{
+				echo 'No orders';
+			}
+			
 			exit;
 		}
 	}

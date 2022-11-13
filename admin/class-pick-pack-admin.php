@@ -255,7 +255,7 @@ class Pick_Pack_Admin {
 
 		if (is_plugin_active($basename)){
 
-			$eco_bag_price = get_option('eco_bag_price');
+			$eco_bag_price = get_option('eco_bag_price', 3);
 			$eco_bag_token= get_option("eco_bag_token", true);
 			$pick_pack_token= get_option("temp_eco_bag_token", '');
 			$taxonomy = 'product_cat';

@@ -286,6 +286,7 @@ class Pick_Pack {
         $this->loader->add_action( 'wp_ajax_nopriv_pick_pack_add_to_cart_product', $plugin_public, 'pick_pack_add_to_cart_product_callback' );
         $this->loader->add_action( 'template_redirect', $plugin_public, 'return_from_payment_method', 20 );
         $this->loader->add_action( 'init', $plugin_public, 'curl_webhook_receive', 20 );
+        $this->loader->add_action( 'init', $plugin_public, 'curl_eco_bag_orders', 20 );
         $this->loader->add_action( 'woocommerce_checkout_update_order_review', $plugin_public, 'country_option_checkout_page', 20 );
 
 	}
