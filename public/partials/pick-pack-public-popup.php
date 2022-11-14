@@ -1,5 +1,5 @@
 <?php
-if(!$this->pick_pack_woo_in_cart($product_id) && ($cart_count !== $fragile_count + $large_count )){ ?>
+if(!$this->pick_pack_woo_in_cart($product_id) && ($cart_count !== $fragile_count + $large_count ) && $points > 5){ ?>
     <button class="toggle-2 button" data-target="pick-pack-container " >Add Eco Bag</button>
 <?php } else { ?> 
     <!-- <button class="toggle-2 button" data-target="pick-pack-container " style="display: none">Add Eco Bag</button> -->
@@ -84,7 +84,7 @@ if(!$this->pick_pack_woo_in_cart($product_id) && ($cart_count !== $fragile_count
 
         <?php
             // if(!isset($_SESSION["pick_pack_product_added"]) && $_SESSION["pick_pack_product_added"] == "" && !woo_in_cart($product_id)){
-            if(!$this->pick_pack_woo_in_cart($product_id) && ($cart_count !== $fragile_count + $large_count )){
+            if(!$this->pick_pack_woo_in_cart($product_id) && ($cart_count !== $fragile_count + $large_count ) && $points > 5){
                 ?>
                     
                     /*jQuery(".toggle-2").show();*/

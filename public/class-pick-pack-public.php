@@ -170,6 +170,12 @@ class Pick_Pack_Public {
 			$remove_eco_bag = true;
 		}
 
+		$points = $this->get_eco_bag_quantity(WC()->cart, false);
+
+		if (($fragile_count > 0 || $large_count > 0) && $points < 5){
+			$remove_eco_bag = true;
+		}
+
 		//Get the eco bag key
 		$eco_bag_key = '';
 		foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) {
@@ -360,11 +366,14 @@ class Pick_Pack_Public {
 
 	}
 
-	public function get_eco_bag_quantity($cart){
+	public function get_eco_bag_quantity($cart, $bags = true){
 
 		$item_bags = 0;
 
 		foreach( $cart->get_cart() as $cart_item_key => $cart_item ) {
+
+			$skip = false;
+
 		    $product_id = $cart_item['data']->get_id();
 
 		    if (get_option("pick_pack_product") == $product_id){
@@ -374,9 +383,19 @@ class Pick_Pack_Public {
 		    $taxonomy = 'product_cat';
 		    $categories = get_the_terms($product_id, 'product_cat');
 
-		    $product_per_bag = get_option('product_per_bag_' . $categories[0]->term_id, 1);
+		    foreach ($categories as $category) {
+		    	if ($category->name == "Large Product" || $category->name == "Fragile Product"){
+		    		$skip = true;
+		    	}
+		    }
 
-		    $item_bags += $cart_item['quantity'] * $product_per_bag;
+		    if (!$skip){
+
+		    	$product_per_bag = get_option('product_per_bag_' . $categories[0]->term_id, 1);
+
+		    	$item_bags += $cart_item['quantity'] * $product_per_bag;
+		    }
+		    
 
 		    /*if ($item_bags < 1){
 		    	$remainder += $item_bags;
@@ -391,7 +410,13 @@ class Pick_Pack_Public {
 
 		$wholesome_bags = ceil($item_bags / 20);
 
-		return $wholesome_bags;
+		if ($bags){
+			return $wholesome_bags;
+		}
+		else{
+			return $item_bags;
+		}
+		
 
 	}
 
