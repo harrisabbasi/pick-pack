@@ -120,7 +120,7 @@
 
                             <h2>Number of Eco Bags sold</h2>
                             
-                            <?php echo $eco_bags_sold . '<br>'; ?>
+                            <?php echo $eco_bags_sold_display . '<br>'; ?>
                             
                             
                             <h2>Large Products: </h2>

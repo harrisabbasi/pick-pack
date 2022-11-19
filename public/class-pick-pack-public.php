@@ -149,6 +149,7 @@ class Pick_Pack_Public {
 		$fragile_count = count($fragile);
 		$large_count = count($large);
 		$pick_pack_count = 0;
+		$points_allocated_less = false;
 
 		if ($this->pick_pack_woo_in_cart($product_id)){
 			$pick_pack_count++;
@@ -171,9 +172,10 @@ class Pick_Pack_Public {
 		}
 
 		$points = $this->get_eco_bag_quantity(WC()->cart, false);
-
+		//points less than 5
 		if (($fragile_count > 0 || $large_count > 0) && $points < 5){
 			$remove_eco_bag = true;
+			$points_allocated_less = true;
 		}
 
 		//Get the eco bag key
@@ -389,6 +391,11 @@ class Pick_Pack_Public {
 		    	}
 		    }
 
+		    if (count($categories) > 1 && !$skip){
+		    	$category_selected = get_post_meta($product_id, 'category_selected', true);
+		    	$categories[0] = get_term($category_selected);
+		    }
+		    /*var_dump($categories[0]);*/
 		    if (!$skip){
 
 		    	$product_per_bag = get_option('product_per_bag_' . $categories[0]->term_id, 1);

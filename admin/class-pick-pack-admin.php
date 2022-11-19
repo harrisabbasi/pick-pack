@@ -197,6 +197,15 @@ class Pick_Pack_Admin {
 		);
 
 		add_submenu_page( 'pick-pack', 'Pick Pack Orders', 'Orders', 'manage_options','edit.php?post_type=pickpackorders');
+
+		add_submenu_page(
+	        'pick-pack',
+	        'Multiple Categories Products',
+	        'Multiple Categories Products',
+	        'manage_options',
+	        'multiple-categories-products',
+	        array($this,'multiple_categories_products_callback')
+   		    );
 	}
 
 	public function pick_pack_package_admin_menu_function() {
@@ -289,6 +298,22 @@ class Pick_Pack_Admin {
 			$products_2 = wc_get_products( $args_2 );
 
 			$eco_bags_sold = get_option('eco_bags_sold', 0);
+			$eco_bags_sold_display = '';
+			$counter = 0;
+
+			if (empty($eco_bags_sold)){
+				$eco_bags_sold_display = '0';
+			}
+			else{
+				foreach ($eco_bags_sold as $array) {
+					
+					$eco_bags_sold_display .= 'Price: ' . $array['price'];
+					
+					$eco_bags_sold_display .= ' Quantity: ' . $array['quantity'] . '<br>';
+					
+					$counter++;
+				}
+			}
 
 			require_once( plugin_dir_path( __FILE__ ) . 'partials/pick-pack-admin-integration.php');
 		}
@@ -439,6 +464,60 @@ class Pick_Pack_Admin {
 				echo '<span style="color:green;">'; _e($eco_bags_sold, 'textdomain'); echo '</span>';
 			}
    		}
+   	}
+
+   	public function multiple_categories_products_callback(){
+   		
+   		if($_SERVER["REQUEST_METHOD"]=="POST"){
+
+
+   			foreach ($_POST['category_selected'] as $key => $value) {
+   				
+   				update_post_meta($key, 'category_selected', (int) $value[0]);
+
+   				# code...
+   			}
+
+   			$_product = wc_get_product( $id );
+
+
+   		}
+   		$args = array(
+   			'limit' => -1,
+   		    'orderby'  => 'name',
+   		);
+   		$products = wc_get_products( $args );
+   		$multiple_categories_products = array();
+
+   		foreach ($products as $product) {
+   			
+   			$product_name = $product->get_name();
+   			if ($product_name == "Pick Pack"){
+   				continue;
+   			}
+   			$terms = get_the_terms( $product->get_id(), 'product_cat' );
+
+   			if (count($terms) > 1){
+   				$multiple_categories_products[$product->get_name()] = $product;
+
+   				foreach ($terms as $term) {
+
+   					if ($term->name == "Large Product" || $term->name == "Fragile Product"){
+
+   						unset($multiple_categories_products[$product->get_name()]);
+
+   					}
+   					# code...
+   				}
+   			}
+   			
+
+   		}
+
+
+   		require_once( plugin_dir_path( __FILE__ ) . 'partials/multiple-categories-products-page.php');
+   		
+
    	}
 
 
