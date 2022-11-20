@@ -302,6 +302,12 @@ footer p a:hover {
     
 }
 
+.multiple-categories select{
+    width:200px;
+    padding:5px;
+    margin: 10px 0px 10px 0px;
+}
+
 
 
 button.toggle.pick_pack_button.pick_pack_add {
