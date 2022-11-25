@@ -336,6 +336,27 @@ class Pick_Pack_Public {
 							'quantity' => $eco_bag_quantity
 						)
 					));
+				}
+
+				$eco_bag_token = get_option('eco_bag_token');
+				$request = new WP_Http();
+
+				
+				$body = array('eco_bags_sold' => $eco_bag_quantity, 'eco_bag_price' => $eco_bag_price, 'order_id' => $post_id, 'timestamp' => date('Y/m/d h:i:s', time()), 'eco_bag_token' => $eco_bag_token, 'url' => get_site_url());
+
+				$url = SERVER_URL . 'dashboard/order_webhook.php';
+
+				$response = $request->get($url, array('body' => $body));
+
+				if (isset($response->errors)) {
+
+				    return false;
+
+				}
+
+				if ($response['response']['code'] === 200) {
+					
+					return true;
 				}	
 
 				

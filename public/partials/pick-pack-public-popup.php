@@ -24,7 +24,7 @@ if(!$this->pick_pack_woo_in_cart($product_id) && ($cart_count !== $fragile_count
       </div>
       <div id="pick_pack_popup" class="popup ">
         <div class="popup-header">
-            Pick Pack Package
+            
             <span class="close toggle" data-target="pick_pack_popup">close</span>
         </div>
         <div class="popup-body">
@@ -44,7 +44,7 @@ if(!$this->pick_pack_woo_in_cart($product_id) && ($cart_count !== $fragile_count
                             Chez nous, nous pensons que le monde a besoin de meilleures solutions pour les emballages à usage unique. C'est pourquoi nous proposons désormais une alternative. Elle se nomme PickPack - un emballage de livraison réutilisable pour les commandes en ligne. Lorsque tu recevras ta commande, tu n'auras qu'à plier ton emballage au format lettre et le renvoyer dans une boite postale Poste Canada, tout simplement!
                         </p>
                         <p>
-                            PickPack est une solution très simple au problème toujours croissant des déchets d'emballage. PickPack réduit les déchets et permet d'économiser une grande quantité des émissions de CO2 par rapport aux emballages à usage unique. Ajoutez un PickPack à votre commande pour 3 $ et recevez vos marchandises dans un emballage réutilisable et écologique. Le retour est GRATUIT !
+                            PickPack est une solution très simple au problème toujours croissant des déchets d'emballage. PickPack réduit les déchets et permet d'économiser une grande quantité des émissions de CO2 par rapport aux emballages à usage unique. Ajoutez un PickPack à votre commande pour 3.99 $ et recevez vos marchandises dans un emballage réutilisable et écologique. Le retour est GRATUIT !
                         </p>
                         <p>
                             Une solution à faible coût, mais à grand impact!
