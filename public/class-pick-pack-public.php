@@ -541,31 +541,10 @@ class Pick_Pack_Public {
 	public function curl_eco_bag_orders(){
 		if (isset($_GET['request']) && $_GET['request'] === 'curl' && $_GET['type'] === 'orders' && SERVER_URL . 'dashboard/cronjob/cronjob_realtime.php' === $_SERVER['HTTP_REFERER']){
 
-			$orders = get_posts(array('post_type' => 'pickpackorders', 'numberposts' => -1));
-			$order_array = array();
-
-			if (count($orders) > 0){
-
-				foreach ($orders as $order) {
-
-					$price = get_post_meta($order->ID, 'price', true);
-					$eco_bags_sold = get_post_meta($order->ID, 'quantity', true);
-
-					$order_array[] = $order->ID . ' ' . $order->post_date . ' ' . $price . ' ' . $eco_bags_sold;
-
-					# code...
-				}
-
-				$string = implode('!', 	$order_array);
-
-				echo $string;
-			}
-
-			else{
-				echo 'No orders';
-			}
+			echo 'OK';
 			
 			exit;
+			
 		}
 	}
 	
