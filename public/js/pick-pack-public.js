@@ -53,7 +53,12 @@ jQuery( document ).ready(function() {
 	jQuery("#pick_pack_popup .toggle").click(function(){
 		release_scroll();
 	});
-	jQuery("#pick_pack_popup .pick_pack_add").click(function(){
+	jQuery("#pick_pack_popup .pick_pack_add").click(function(event){
+		
+		if (!jQuery("#checkbox-pickpack").is(':checked')){
+			event.preventDefault();
+			return;
+		}
 		release_scroll();
 		product_add_to_cart();
 	});

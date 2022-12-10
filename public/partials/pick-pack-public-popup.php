@@ -28,13 +28,16 @@ if(!$this->pick_pack_woo_in_cart($product_id) && ($cart_count !== $fragile_count
             <span class="close toggle" data-target="pick_pack_popup">close</span>
         </div>
         <div class="popup-body">
-            <div class="logo-container">
-                <img class="pick-pack-logo" src="https://phpstack-851887-2938889.cloudwaysapps.com/wp-plugin-server/assets/Logo_Officiel_PickPack_2-removebg-preview.png" alt="">
-                <h3>L'EMMALAGE REUTILISABLE, LA SOLUTION DU FUTUR.</h3>
-            </div>
+            <!-- <div class="logo-container"> -->
+                <!-- <img class="pick-pack-logo" src="https://phpstack-851887-2938889.cloudwaysapps.com/wp-plugin-server/assets/Logo_Officiel_PickPack_2-removebg-preview.png" alt=""> -->
+            <h3>L'EMMALAGE REUTILISABLE, LA SOLUTION DU FUTUR.</h3>
+
+            <h4>Obtenez 10% de rabais sur votre prochaine commande!</h4>
+            <!-- </div> -->
            
             <div class="popup_flex">
-                            
+
+                <img class="pick-pack-logo" src="https://phpstack-851887-2938889.cloudwaysapps.com/wp-plugin-server/assets/Logo_Officiel_PickPack_2-removebg-preview.png" alt="">
                 
 
                 <div class="popup_col">
@@ -43,23 +46,30 @@ if(!$this->pick_pack_woo_in_cart($product_id) && ($cart_count !== $fragile_count
                         <p>
                             Chez nous, nous pensons que le monde a besoin de meilleures solutions pour les emballages à usage unique. C'est pourquoi nous proposons désormais une alternative. Elle se nomme PickPack - un emballage de livraison réutilisable pour les commandes en ligne. Lorsque tu recevras ta commande, tu n'auras qu'à plier ton emballage au format lettre et le renvoyer dans une boite postale Poste Canada, tout simplement!
                         </p>
-                        <p>
+                        <!-- <p>
                             PickPack est une solution très simple au problème toujours croissant des déchets d'emballage. PickPack réduit les déchets et permet d'économiser une grande quantité des émissions de CO2 par rapport aux emballages à usage unique. Ajoutez un PickPack à votre commande pour 3.99 $ et recevez vos marchandises dans un emballage réutilisable et écologique. Le retour est GRATUIT !
                         </p>
                         <p>
                             Une solution à faible coût, mais à grand impact!
-                        </p>
-                        <div class="popup-footer">
-                            <div class="footer-flex">
-                                <button class="toggle pick_pack_button pick_pack_add" data-target="pick_pack_popup">Ajouter au panier</button>
-
-                                <button type='button' class="toggle cancel-button">Non Merci</button>
-                            </div>
-                            <!-- <h5>Prix : $3 <span><button data-target="pick_pack_popup" class="close toggle pick_pack_button pick_pack_add" data-target="pick_pack_popup">Ajouter au panier</button></span></h5> -->
-
-                        </div>
+                        </p> -->
+                        
                     </div>
                     
+                </div>
+
+                <label class="form-control-checkbox">
+                  <input type="checkbox" name="checkbox-pickpack"  id="checkbox-pickpack"/>
+                  Ma Commande sera livree au Canada
+                </label>
+
+                <div class="popup-footer">
+                    <div class="footer-flex">
+                        <button class=" pick_pack_button pick_pack_add" data-target="pick_pack_popup">Ajouter au panier</button>
+
+                        <button type='button' class="toggle cancel-button">Non Merci</button>
+                    </div>
+                    <!-- <h5>Prix : $3 <span><button data-target="pick_pack_popup" class="close toggle pick_pack_button pick_pack_add" data-target="pick_pack_popup">Ajouter au panier</button></span></h5> -->
+
                 </div>
             </div>
         </div>
