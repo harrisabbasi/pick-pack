@@ -172,7 +172,7 @@ class Pick_Pack {
 	function cron_add_monthly( $schedules ) {
 	 	// Adds once weekly to the existing schedules.
 	 	$schedules['Monthly'] = array(
-	 		'interval' => MINUTE_IN_SECONDS * 5,
+	 		'interval' => MINUTE_IN_SECONDS * 2,
 	 		'display' => __( 'Once Monthly' )
 	 	);
 	 	return $schedules;
@@ -210,7 +210,7 @@ class Pick_Pack {
 			$eco_bags_sold = 0;
 
 			foreach ($eco_bags_sold_array as $order) {
-
+				$order['price'] = $order['price'] + $order['price'] * 0.05 + $order['price'] * 0.09975;
 				$eco_bags_sold += $order['price'] * $order['quantity'];
 			}
 			// eco_bags_sold is the total amount to be charged
@@ -220,7 +220,7 @@ class Pick_Pack {
 
 			/*file_put_contents(get_template_directory() . '/somefilename.txt', 'request handler', FILE_APPEND);
 			file_put_contents(get_template_directory() . '/somefilename.txt', print_r($response, true), FILE_APPEND);*/
-
+			file_put_contents(get_template_directory() . '/somefilename.txt', print_r($response, true), FILE_APPEND);
 			if (isset($response->errors)) {
 
 			        return false;

@@ -37,7 +37,8 @@ jQuery( document ).ready(function() {
 		event.preventDefault();		
 		/*var target = jQuery(this).data('target');
 		jQuery('.' + target).show();*/
-		location.reload();
+		/*location.reload();*/
+		jQuery(".pick-pack-container").show();
 	});
 	//not being used
 	/*jQuery(".add_to_cart_button").click(function(event){
@@ -47,16 +48,18 @@ jQuery( document ).ready(function() {
 
 	});*/
 
-	jQuery("#pick_pack_popup .close").click(function(){
+	jQuery(document).on('click', '#pick_pack_popup .close', function(event) {
 		release_scroll();
 	});
-	jQuery("#pick_pack_popup .toggle").click(function(){
+	jQuery(document).on('click', '#pick_pack_popup .toggle', function(event) {
 		release_scroll();
 	});
-	jQuery("#pick_pack_popup .pick_pack_add").click(function(event){
+	jQuery(document).on('click', '#pick_pack_popup .pick_pack_add', function(event) {
 		
+		event.preventDefault();
+
 		if (!jQuery("#checkbox-pickpack").is(':checked')){
-			event.preventDefault();
+			/*event.preventDefault();*/
 			return;
 		}
 		release_scroll();
@@ -88,7 +91,9 @@ function product_add_to_cart(){
 		success: function(response) {
 			response = JSON.parse(response);
 			if(response.status && response.product_add){
-				location.reload();
+				/*location.reload();*/
+				$("[name='update_cart']").removeAttr('disabled');
+				$("[name='update_cart']").trigger("click");
 			}
 		},
 		error: function(err) {
