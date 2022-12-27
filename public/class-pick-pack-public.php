@@ -142,11 +142,11 @@ class Pick_Pack_Public {
 
 		   	foreach ($terms as $term) {
 		   		if ($term->name == "Fragile Product"){
-		   			$fragile[] = $cart_item['data']->name . ' is a fragile product';
+		   			$fragile[] = sprintf(esc_attr__('%s is a fragile product', 'pick-pack'), $cart_item['data']->name);
 		   		}
 
 		   		if ($term->name == "Large Product"){
-		   			$large[] = $cart_item['data']->name . ' is a large product';
+		   			$large[] = sprintf(esc_attr__('%s is a large product', 'pick-pack'), $cart_item['data']->name);
 		   		}
 		   		
 		   	}
@@ -638,8 +638,9 @@ class Pick_Pack_Public {
 	public function display_pick_pack_info(){
 		if ( ! is_ajax() ) {
 			$product_id = get_option("pick_pack_product");
+			$text = esc_attr__('Pick Pack bag option only available in Canada', 'pick-pack');
 			if($this->pick_pack_woo_in_cart($product_id)){
-				echo '<div class="pick-pack-info"><p>Pick Pack bag option only available in Canada</p><p id="state-tax-info">';
+				echo '<div class="pick-pack-info">' . $text . '</p><p id="state-tax-info">';
 			}
 
 			/*if (WC()->checkout->get_value('billing_country') === 'CA'){

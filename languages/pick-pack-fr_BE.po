@@ -75,3 +75,122 @@ msgid ""
 "as agreed."
 msgstr ""
 "CONDITIONS : Vous devez choisir l'option PickPack ET retourner votre emballage comme convenu."
+
+#: partials/pick-pack-admin-integration.php:21
+msgid "Pick Pack Integration"
+msgstr "Intégration Pick Pack"
+
+#: partials/pick-pack-admin-integration.php:60
+msgid "Eco Bag Price: "
+msgstr "Eco Bag Prix "
+
+#: partials/pick-pack-admin-integration.php:66
+#, php-format
+msgid "Number of points for %s"
+msgstr "Nombre de points pour %s"
+
+#: partials/pick-pack-admin-integration.php:75
+msgid "Insert your token here that is used to add and update payment method"
+msgstr "Insérez ici votre jeton qui est utilisé pour ajouter et mettre à jour la méthode de paiement"
+
+#: partials/pick-pack-admin-integration.php:87
+msgid "Get Token from our server"
+msgstr "Obtenez le Token de notre serveur"
+
+#: partials/pick-pack-admin-integration.php:90
+msgid "Go to Link"
+msgstr "Aller au lien"
+
+#: partials/pick-pack-admin-integration.php:121
+msgid "Number of Eco Bags sold"
+msgstr "Nombre d'Eco Bags vendus"
+
+#: partials/pick-pack-admin-integration.php:126
+msgid "Large Products: "
+msgstr "Produits de grande taille "
+
+#: partials/pick-pack-admin-integration.php:133
+msgid "Fragile Products: "
+msgstr "Produits fragiles "
+
+#: partials/pick-pack-admin-integration.php:142
+msgid "Set up Payment Details"
+msgstr "Configurer les détails du paiement"
+
+#: partials/pick-pack-admin-integration.php:146
+msgid "Register Payment Method"
+msgstr "Enregistrer le mode de paiement"
+
+#: partials/pick-pack-admin-integration.php:150
+msgid "Update Payment Details"
+msgstr "Mettre à jour les détails de paiement"
+
+#: partials/pick-pack-admin-integration.php:155
+msgid "Update Payment Method"
+msgstr "Mettre à jour le mode de paiement"
+
+#: class-pick-pack-public.php:115
+msgid "Tax rate in Alberta is 5%"
+msgstr "Le taux d'imposition en Alberta est de 5 %"
+
+#: class-pick-pack-public.php:115
+msgid "Tax rate in British Columbia is 12%"
+msgstr "Le taux d'imposition en Colombie-Britannique est de 12 %"
+
+#: class-pick-pack-public.php:115
+msgid "Tax rate in Manitoba is 13%"
+msgstr "Le taux d'imposition au Manitoba est de 13 %"
+
+#: class-pick-pack-public.php:115
+msgid "Tax rate in New Brunswick is 13%"
+msgstr "Le taux d'imposition au Nouveau-Brunswick est de 13 %"
+
+#: class-pick-pack-public.php:115
+msgid "Tax rate in Newfoundland and Labrador is 13%"
+msgstr "Le taux d'imposition à Terre-Neuve-et-Labrador est de 13 %"
+
+#: class-pick-pack-public.php:115
+msgid "Tax rate in Northwest Territories is 5%"
+msgstr "Le taux d'imposition dans les Territoires du Nord-Ouest est de 5 %"
+
+#: class-pick-pack-public.php:115
+msgid "Tax rate in Nova Scotia is 15%"
+msgstr "Le taux d'imposition en Nouvelle-Écosse est de 15 %"
+
+#: class-pick-pack-public.php:115
+msgid "Tax rate in Nunavut is 5%"
+msgstr "Le taux d'imposition au Nunavut est de 5 %"
+
+#: class-pick-pack-public.php:115
+msgid "Tax rate in Ontario is 13%"
+msgstr "Le taux d'imposition en Ontario est de 13 %"
+
+#: class-pick-pack-public.php:115
+msgid "Tax rate in Prince Edward Island is 14%"
+msgstr "Le taux d'imposition à l'Île-du-Prince-Édouard est de 14 %"
+
+#: class-pick-pack-public.php:115
+msgid "Tax rate in Quebec is 14.975%"
+msgstr "Le taux d'imposition au Québec est de 14,975 %"
+
+#: class-pick-pack-public.php:115
+msgid "Tax rate in Saskatchewan is 10%"
+msgstr "Le taux d'imposition en Saskatchewan est de 10 %"
+
+#: class-pick-pack-public.php:115
+msgid "Tax rate in Yukon Territory is 5%"
+msgstr "Le taux d'imposition au Yukon est de 5 %"
+
+#: class-pick-pack-public.php:145
+#, php-format
+msgid "%s is a fragile product"
+msgstr "%s est un produit fragile"
+
+#: class-pick-pack-public.php:149
+#, php-format
+msgid "%s is a large product"
+msgstr "%s est un grand produit"
+
+#: class-pick-pack-public.php:641
+msgid "Pick Pack bag option only available in Canada"
+msgstr "Option de sac Pick Pack uniquement disponible au Canada"

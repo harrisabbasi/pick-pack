@@ -18,7 +18,7 @@
 <div class="pick_pack_container container">
     <div class="row pt-5">
         <div class="col-sm-12 ">
-            <h1 class="pick_pack_main_title">Pick Pack Integration</h1>
+            <h1 class="pick_pack_main_title"><?php esc_attr_e('Pick Pack Integration', 'pick-pack'); ?></h1>
         </div>
     </div>
 
@@ -57,13 +57,13 @@
 
                             <!-- Model changes -->
                             <div class="tab-pane active" id="home" role="tabpanel">
-                                <h5>Eco Bag Price: <?php echo ($eco_bag_price !== false) ? $eco_bag_price : 'Not set'?></h5>
+                                <h5><?php esc_attr_e('Eco Bag Price: ', 'pick-pack') ?><?php echo ($eco_bag_price !== false) ? $eco_bag_price : 'Not set'?></h5>
                                 <form action="" method="post">
                                     
                                     <?php foreach ($category_array as $category) { ?>
                                     <div class="row pt-4">
                                         <div class="col-lg-2 col-sm-12">
-                                            <h5 class="pick_pack_title">Number of points for <?php echo $category['category_name'] ?></h5>
+                                            <h5 class="pick_pack_title"><?php printf(esc_attr__('Number of points for %s', 'pick-pack'), $category['category_name']);?></h5>
                                         </div>
                                         <div class="col-lg-5 col-sm-12">
                                             <input type="number" name="product_per_bag_<?php echo $category['category_id'] ?>" class="pick_pack_input"  value="<?php  echo $category['category_value'] ?>" placeholder="Products per bag" >
@@ -72,7 +72,7 @@
                                 <?php } ?>
                                     <div class="row pt-4">
                                         <div class="col-lg-2 col-sm-12">
-                                            <h5 class="pick_pack_title">Insert your token here that is used to add and update payment method</h5>
+                                            <h5 class="pick_pack_title"><?php esc_attr_e('Insert your token here that is used to add and update payment method', 'pick-pack'); ?></h5>
                                         </div>
                                         <div class="col-lg-5 col-sm-12">
                                             <input type="text" name="pick_pack_token" class="pick_pack_input"  value="<?php if(isset($pick_pack_token) && !empty($pick_pack_token)){ echo $pick_pack_token; } ?>" placeholder="Pick Pack Token" >
@@ -84,10 +84,10 @@
                                     
                                     <div class="row pt-4">
                                         <div class="col-lg-2 col-sm-12">
-                                            <h5 class="pick_pack_title">Get Token from our server</h5>
+                                            <h5 class="pick_pack_title"><?php esc_attr_e('Get Token from our server', 'pick-pack') ?></h5>
                                         </div>
                                         <div class="col-lg-5 col-sm-12">
-                                            <a href = '<?php echo SERVER_URL ?>token.php' class="pick_pack_buttons_hover" target="_blank" >Go to Link</a>
+                                            <a href = '<?php echo SERVER_URL ?>token.php' class="pick_pack_buttons_hover" target="_blank" ><?php esc_attr_e('Go to Link', 'pick-pack') ?></a>
                                         </div>
                                     </div>
                                 <?php } ?>
@@ -118,19 +118,19 @@
 
                             <!-- Model changes -->
 
-                            <h2>Number of Eco Bags sold</h2>
+                            <h2><?php esc_attr_e('Number of Eco Bags sold', 'pick-pack') ?></h2>
                             
                             <?php echo $eco_bags_sold_display . '<br>'; ?>
                             
                             
-                            <h2>Large Products: </h2>
+                            <h2><?php esc_attr_e('Large Products: ', 'pick-pack') ?></h2>
                             <?php foreach ($products as $product) {
                                 echo $product->name . '<br>';
                             }?>
                         
 
 
-                            <h2>Fragile Products: </h2>
+                            <h2><?php esc_attr_e('Fragile Products: ', 'pick-pack') ?></h2>
                             <?php foreach ($products_2 as $product) {
                                 echo $product->name . '<br>';
                             }?>
@@ -139,20 +139,20 @@
                             <?php /*file_put_contents(get_template_directory() . '/somefilename.txt', print_r($eco_bag_token, true), FILE_APPEND);*/if ($eco_bag_token != false){
                                 if ($eco_bag_token === true){
                                     ?>
-                                    <h2>Set up Payment Details</h2>
+                                    <h2><?php esc_attr_e('Set up Payment Details', 'pick-pack') ?></h2>
                                     <form method="POST" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>">
                                         <?php wp_nonce_field('my-nonce'); ?>
                                         <input type="hidden" name="action" value="pick_pack_payment">
-                                        <button type="submit" class="pick_pack_buttons_hover">Register Payment Method</button>
+                                        <button type="submit" class="pick_pack_buttons_hover"><?php esc_attr_e('Register Payment Method', 'pick-pack') ?></button>
                                     </form>
                             <?php } else{ ?>
 
-                                <h2>Update Payment Details</h2>
+                                <h2><?php esc_attr_e('Update Payment Details', 'pick-pack') ?></h2>
                                 <form method="POST" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>">
                                     <?php wp_nonce_field('my-nonce'); ?>
                                     <input type="hidden" name="token_update" value="true">
                                     <input type="hidden" name="action" value="pick_pack_payment">
-                                    <button type="submit" class="pick_pack_buttons_hover">Update Payment Method</button>
+                                    <button type="submit" class="pick_pack_buttons_hover"><?php esc_attr_e('Update Payment Method', 'pick-pack') ?></button>
                                 </form>
                                 <?php
                                 }
