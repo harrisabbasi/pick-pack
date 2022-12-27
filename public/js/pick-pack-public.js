@@ -29,76 +29,90 @@
 	 * practising this, we should strive to set a better example in our own work.
 	 */
 
-})( jQuery );
+	jQuery( document ).ready(function() {
 
-jQuery( document ).ready(function() {
+		jQuery(document).on('click', '.toggle-2', function(event) {
+			event.preventDefault();		
+			/*var target = jQuery(this).data('target');
+			jQuery('.' + target).show();*/
+			/*location.reload();*/
+			jQuery(".pick-pack-container").show();
+		});
+		//not being used
+		/*jQuery(".add_to_cart_button").click(function(event){
+			event.preventDefault();
+			jQuery('#pick_pack_popup').toggleClass('hide');
+			product_add_to_cart();
 
-	jQuery(document).on('click', '.toggle-2', function(event) {
-		event.preventDefault();		
-		/*var target = jQuery(this).data('target');
-		jQuery('.' + target).show();*/
-		/*location.reload();*/
-		jQuery(".pick-pack-container").show();
+		});*/
+
+		jQuery(document).on('click', '#pick_pack_popup .close', function(event) {
+			release_scroll();
+		});
+		jQuery(document).on('click', '#pick_pack_popup .toggle', function(event) {
+			release_scroll();
+		});
+		jQuery(document).on('click', '#pick_pack_popup .pick_pack_add', function(event) {
+			
+			event.preventDefault();
+
+			if (!jQuery("#checkbox-pickpack").is(':checked')){
+				/*event.preventDefault();*/
+				return;
+			}
+			release_scroll();
+			product_add_to_cart();
+		});
+
+		$( document.body ).on( 'update_checkout', function(event){
+			if (jQuery("[name='billing_country']").find(":selected").val() === 'CA'){
+				
+				let state_name = jQuery("[name='billing_state']").find(":selected").val();
+
+				if (typeof php_vars.state_name_array[state_name] !== 'undefined'){
+					
+					jQuery("#state-tax-info").html(php_vars.state_name_array[state_name]);
+					
+				}
+			}
+		});
+
 	});
-	//not being used
-	/*jQuery(".add_to_cart_button").click(function(event){
-		event.preventDefault();
-		jQuery('#pick_pack_popup').toggleClass('hide');
-		product_add_to_cart();
-
-	});*/
-
-	jQuery(document).on('click', '#pick_pack_popup .close', function(event) {
-		release_scroll();
-	});
-	jQuery(document).on('click', '#pick_pack_popup .toggle', function(event) {
-		release_scroll();
-	});
-	jQuery(document).on('click', '#pick_pack_popup .pick_pack_add', function(event) {
-		
-		event.preventDefault();
-
-		if (!jQuery("#checkbox-pickpack").is(':checked')){
-			/*event.preventDefault();*/
-			return;
-		}
-		release_scroll();
-		product_add_to_cart();
-	});
-
-});
 
 
-function release_scroll(){
-	jQuery('html, body').css({
-		overflow: 'auto',
-		height: 'auto'
-	});
-	jQuery(".pick-pack-container").hide();
-}
-
-function product_add_to_cart(){
-
-	var data = {
-		action: 'pick_pack_add_to_cart_product',
-		security: php_vars.nonce,
+	function release_scroll(){
+		jQuery('html, body').css({
+			overflow: 'auto',
+			height: 'auto'
+		});
+		jQuery(".pick-pack-container").hide();
 	}
 
-	jQuery.ajax({
-		type: 'post',
-		url: php_vars.ajaxurl,
-		data: data,
-		success: function(response) {
-			response = JSON.parse(response);
-			if(response.status && response.product_add){
-				/*location.reload();*/
-				$("[name='update_cart']").removeAttr('disabled');
-				$("[name='update_cart']").trigger("click");
-			}
-		},
-		error: function(err) {
-			console.log(err);
-		}
-	});
+	function product_add_to_cart(){
 
-}
+		var data = {
+			action: 'pick_pack_add_to_cart_product',
+			security: php_vars.nonce,
+		}
+
+		jQuery.ajax({
+			type: 'post',
+			url: php_vars.ajaxurl,
+			data: data,
+			success: function(response) {
+				response = JSON.parse(response);
+				if(response.status && response.product_add){
+					/*location.reload();*/
+					jQuery("[name='update_cart']").removeAttr('disabled');
+					jQuery("[name='update_cart']").trigger("click");
+				}
+			},
+			error: function(err) {
+				console.log(err);
+			}
+		});
+
+	}
+
+})( jQuery );
+

@@ -282,7 +282,7 @@ class Pick_Pack_Admin {
 
 			foreach ($categories as $category) {
 
-				$category_array[] = array('category_id' => $category->term_id, 'category_value' => get_option('product_per_bag_' . $category->term_id, 1), 'category_name' => $category->name);
+				$category_array[] = array('category_id' => $category->term_id, 'category_value' => get_option('product_per_bag_' . $category->term_id, 3), 'category_name' => $category->name);
 			}
 
 			$args = array(

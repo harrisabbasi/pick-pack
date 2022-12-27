@@ -96,15 +96,25 @@ class Pick_Pack_Public {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name.'-jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js' , $this->version, false );
+		/*wp_enqueue_script( $this->plugin_name.'-jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js' , $this->version, false );*/
+		$state_name_array = $this->get_state_name_array();
+
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/pick-pack-public.js', array( 'jquery' ), $this->version, false );
 		$jsarray = array(
 			'class_name' => 'single_add_to_cart_button',
 			'ajaxurl' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('_wpnonce')
+            'nonce' => wp_create_nonce('_wpnonce'),
+            'state_name_array' => $state_name_array
 			
 		);
 		wp_localize_script( $this->plugin_name, 'php_vars', $jsarray ); 
+	}
+
+	public function get_state_name_array(){
+
+		$state_name_array = ['AB' => esc_attr__("Tax rate in Alberta is 5%", "pick-pack"), 'BC' => esc_attr__("Tax rate in British Columbia is 12%", "pick-pack"), 'MB' => esc_attr__("Tax rate in Manitoba is 13%", "pick-pack"), 'NB' => esc_attr__("Tax rate in New Brunswick is 13%", "pick-pack"), 'NL' => esc_attr__("Tax rate in Newfoundland and Labrador is 13%", "pick-pack"), 'NT' => esc_attr__("Tax rate in Northwest Territories is 5%", "pick-pack"), 'NS' => esc_attr__("Tax rate in Nova Scotia is 15%", "pick-pack"), 'NU' => esc_attr__("Tax rate in Nunavut is 5%", "pick-pack"), 'ON' => esc_attr__("Tax rate in Ontario is 13%", "pick-pack"), 'PE' => esc_attr__("Tax rate in Prince Edward Island is 14%", "pick-pack"), 'QC' => esc_attr__("Tax rate in Quebec is 14.975%", "pick-pack"), 'SK' => esc_attr__("Tax rate in Saskatchewan is 10%", "pick-pack"), 'YT' => esc_attr__("Tax rate in Yukon Territory is 5%", "pick-pack")];
+
+		return $state_name_array;
 	}
 
 
@@ -174,6 +184,11 @@ class Pick_Pack_Public {
 		$points = $this->get_eco_bag_quantity(WC()->cart, false);
 		//points less than 5
 		if (($fragile_count > 0 || $large_count > 0) && $points < 5){
+			$remove_eco_bag = true;
+			$points_allocated_less = true;
+		}
+		//points less than 3 without fragile and large items
+		if ($fragile_count == 0 && $large_count == 0 && $points < 3){
 			$remove_eco_bag = true;
 			$points_allocated_less = true;
 		}
@@ -320,7 +335,7 @@ class Pick_Pack_Public {
 				$eco_bag_quantity = $item_data['quantity'];
 
 				$eco_bags_sold_array = get_option('eco_bags_sold', array());
-				$eco_bag_price = get_option('eco_bag_price', 3);
+				$eco_bag_price = get_option('eco_bag_price', 3.99);
 
 				$eco_bags_sold_array[] = array('price' => $eco_bag_price, 'quantity' => $eco_bag_quantity);
 
@@ -419,7 +434,7 @@ class Pick_Pack_Public {
 		    /*var_dump($categories[0]);*/
 		    if (!$skip){
 
-		    	$product_per_bag = get_option('product_per_bag_' . $categories[0]->term_id, 1);
+		    	$product_per_bag = get_option('product_per_bag_' . $categories[0]->term_id, 3);
 
 		    	$item_bags += $cart_item['quantity'] * $product_per_bag;
 		    }
@@ -547,7 +562,106 @@ class Pick_Pack_Public {
 			
 		}
 	}
-	
+
+	public function get_state_tax($state){
+
+		switch ($state){
+			case 'AB':
+				$tax = 1.05;
+				break;
+			case 'BC':
+				$tax = 1.12;
+				break;
+			case 'MB':
+				$tax = 1.13;
+				break;
+			case 'NB':
+				$tax = 1.13;
+				break;
+			case 'NL':
+				$tax = 1.13;
+				break;
+			case 'NT':
+				$tax = 1.05;
+				break;
+			case 'NS':
+				$tax = 1.15;
+				break;
+			case 'NU':
+				$tax = 1.05;
+				break;
+			case 'ON':
+				$tax = 1.13;
+				break;
+			case 'PE':
+				$tax = 1.14;
+				break;
+			case 'QC':
+				$tax = 1.14975;
+				break;
+			case 'SK':
+				$tax = 1.10;
+				break;
+			case 'YT':
+				$tax = 1.05;
+				break;
+			default:
+				$tax = 1.00;
+				break;
+		}
+
+		return $tax;
+	}
+
+	public function checkout_page_pick_pack_tax(){
+
+		$product_id = get_option("pick_pack_product");
+		$eco_bag_price = get_option('eco_bag_price', 3.99);
+		session_start();
+
+		/*file_put_contents(get_template_directory() . '/somefilename.txt', print_r(WC()->checkout->get_value('billing_state'), true), FILE_APPEND);*/
+		if (WC()->checkout->get_value('billing_country') === 'CA' && WC()->checkout->get_value('billing_state') !== ''){
+			
+			if($this->pick_pack_woo_in_cart($product_id)){
+				foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
+			        if ( $cart_item['data']->get_id() == $product_id ) {
+			        	$tax = $this->get_state_tax(WC()->checkout->get_value('billing_state'));
+			        	$cart_item['data']->set_price( number_format((float)$eco_bag_price * $tax, 2, '.', ''));
+			        	
+			         
+			     	}
+				}
+			}
+		}
+	}
+
+	public function display_pick_pack_info(){
+		if ( ! is_ajax() ) {
+			$product_id = get_option("pick_pack_product");
+			if($this->pick_pack_woo_in_cart($product_id)){
+				echo '<div class="pick-pack-info"><p>Pick Pack bag option only available in Canada</p><p id="state-tax-info">';
+			}
+
+			/*if (WC()->checkout->get_value('billing_country') === 'CA'){
+				$state_name = $this->get_state_name(WC()->checkout->get_value('billing_state'));
+				echo 'Tax rate in alberta is 12 %';
+			}*/
+
+			echo '</p></div>';
+		}
+	}
+
+	/*public function change_pick_pack_info(){
+		if ( is_ajax() ) {
+			$product_id = get_option("pick_pack_product");
+			if($this->pick_pack_woo_in_cart($product_id)){
+				echo 'hello';
+			}
+
+			
+		}
+	}*/
+
 
 }
 
