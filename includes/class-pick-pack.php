@@ -199,7 +199,7 @@ class Pick_Pack {
 	 */
 	public function cronjob_function() {
 
-		file_put_contents(get_template_directory() . '/somefilename.txt', 'single event cronjob', FILE_APPEND);
+		/*file_put_contents(get_template_directory() . '/somefilename.txt', 'single event cronjob', FILE_APPEND);*/
 
 		$eco_bags_sold_array = get_option('eco_bags_sold', array());
 		$eco_bag_token = get_option('eco_bag_token');
@@ -287,8 +287,8 @@ class Pick_Pack {
         $this->loader->add_action( 'template_redirect', $plugin_public, 'return_from_payment_method', 20 );
         $this->loader->add_action( 'init', $plugin_public, 'curl_webhook_receive', 20 );
         $this->loader->add_action( 'init', $plugin_public, 'curl_eco_bag_orders', 20 );
-        $this->loader->add_action( 'woocommerce_checkout_update_order_review', $plugin_public, 'checkout_page_pick_pack_tax', 10 );
-        $this->loader->add_action( 'woocommerce_checkout_update_order_review', $plugin_public, 'country_option_checkout_page', 20 );
+        $this->loader->add_action( 'woocommerce_checkout_update_order_review', $plugin_public, 'checkout_page_pick_pack_tax', 20 );
+        $this->loader->add_action( 'woocommerce_checkout_update_order_review', $plugin_public, 'country_option_checkout_page', 10 );
         /*$this->loader->add_action( 'woocommerce_checkout_update_order_review', $plugin_public, 'change_pick_pack_info', 30 );*/
         $this->loader->add_action( 'woocommerce_review_order_after_cart_contents', $plugin_public, 'display_pick_pack_info', 20 );
         

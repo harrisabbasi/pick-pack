@@ -335,7 +335,7 @@ class Pick_Pack_Public {
 				$eco_bag_quantity = $item_data['quantity'];
 
 				$eco_bags_sold_array = get_option('eco_bags_sold', array());
-				$eco_bag_price = get_option('eco_bag_price', 3.99);
+				$eco_bag_price = $item_data['total'];
 
 				$eco_bags_sold_array[] = array('price' => $eco_bag_price, 'quantity' => $eco_bag_quantity);
 
@@ -481,14 +481,15 @@ class Pick_Pack_Public {
 		}
 
 	}
-
+	//updated post values are not shown
 	public function country_option_checkout_page(){
 		
 		$product_id = get_option("pick_pack_product");
+		parse_str( $_POST['post_data'], $post_data );
 		session_start();
 
 		/*file_put_contents(get_template_directory() . '/somefilename.txt', 'haris', FILE_APPEND);*/
-		if (WC()->checkout->get_value('billing_country') !== 'CA'){
+		if ($post_data['billing_country'] !== 'CA'){
 			/*file_put_contents(get_template_directory() . '/somefilename.txt', 'abbasi', FILE_APPEND);*/
 			if($this->pick_pack_woo_in_cart($product_id)){
 				foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
@@ -505,20 +506,22 @@ class Pick_Pack_Public {
 			/*file_put_contents(get_template_directory() . '/somefilename.txt', 'yassar', FILE_APPEND);*/
 			if(!$this->pick_pack_woo_in_cart($product_id) && !empty($_SESSION["pick_pack_product_added"]) && $_SESSION["pick_pack_product_added"] === $product_id){
 				/*file_put_contents(get_template_directory() . '/somefilename.txt', 'khan', FILE_APPEND);*/
-				$add = WC()->cart->add_to_cart( $product_id,1 );
-				if ($add){
-					$new_qty = $this->get_eco_bag_quantity(WC()->cart); // New quantity
+				if(!$this->pick_pack_woo_in_cart($product_id)){
+					$add = WC()->cart->add_to_cart( $product_id,1 );
+					if ($add){
+						$new_qty = $this->get_eco_bag_quantity(WC()->cart); // New quantity
 
-			    	foreach( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
-			    	    // Check for specific product IDs and change quantity
-			    	    if( $cart_item['product_id'] == $product_id ){
-			    	        
-			    	        WC()->cart->set_quantity( $cart_item_key, $new_qty ); // Change quantity
+				    	foreach( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
+				    	    // Check for specific product IDs and change quantity
+				    	    if( $cart_item['product_id'] == $product_id ){
+				    	        
+				    	        WC()->cart->set_quantity( $cart_item_key, $new_qty ); // Change quantity
 
-			    	    }
-			    	    	
-			    	 }
-			    }
+				    	    }
+				    	    	
+				    	 }
+				    }
+				}
 			}
 		}
 
@@ -547,7 +550,7 @@ class Pick_Pack_Public {
 				
 			}
 			else{
-				echo 'failure';
+				echo 'failure setting price';
 			}
 			exit;
 		}
@@ -612,20 +615,22 @@ class Pick_Pack_Public {
 
 		return $tax;
 	}
-
+	//updated post values are not shown
 	public function checkout_page_pick_pack_tax(){
 
 		$product_id = get_option("pick_pack_product");
 		$eco_bag_price = get_option('eco_bag_price', 3.99);
+		parse_str( $_POST['post_data'], $post_data );
 		session_start();
 
-		/*file_put_contents(get_template_directory() . '/somefilename.txt', print_r(WC()->checkout->get_value('billing_state'), true), FILE_APPEND);*/
-		if (WC()->checkout->get_value('billing_country') === 'CA' && WC()->checkout->get_value('billing_state') !== ''){
+		file_put_contents(get_template_directory() . '/somefilename.txt', print_r($post_data, true), FILE_APPEND);
+		
+		if ($post_data['billing_country'] === 'CA' && $post_data['billing_state'] !== ''){
 			
 			if($this->pick_pack_woo_in_cart($product_id)){
 				foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
 			        if ( $cart_item['data']->get_id() == $product_id ) {
-			        	$tax = $this->get_state_tax(WC()->checkout->get_value('billing_state'));
+			        	$tax = $this->get_state_tax($post_data['billing_state']);
 			        	$cart_item['data']->set_price( number_format((float)$eco_bag_price * $tax, 2, '.', ''));
 			        	
 			         
