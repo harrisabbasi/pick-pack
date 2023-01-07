@@ -335,7 +335,7 @@ class Pick_Pack_Public {
 				$eco_bag_quantity = $item_data['quantity'];
 
 				$eco_bags_sold_array = get_option('eco_bags_sold', array());
-				$eco_bag_price = $item_data['total'];
+				$eco_bag_price = $item_data['total'] / $item_data['quantity'];
 
 				$eco_bags_sold_array[] = array('price' => $eco_bag_price, 'quantity' => $eco_bag_quantity);
 
@@ -623,7 +623,7 @@ class Pick_Pack_Public {
 		parse_str( $_POST['post_data'], $post_data );
 		session_start();
 
-		file_put_contents(get_template_directory() . '/somefilename.txt', print_r($post_data, true), FILE_APPEND);
+		/*file_put_contents(get_template_directory() . '/somefilename.txt', print_r($post_data, true), FILE_APPEND);*/
 		
 		if ($post_data['billing_country'] === 'CA' && $post_data['billing_state'] !== ''){
 			
@@ -638,6 +638,33 @@ class Pick_Pack_Public {
 				}
 			}
 		}
+	}
+
+	public function checkout_pick_pack_add_tax_order($order_id, $posted_data, $order){
+		$billing_state =$order->get_billing_state();
+		$eco_bag_price = get_option('eco_bag_price', 3.99);
+		/*file_put_contents(get_template_directory() . '/somefilename.txt', print_r($order, true), FILE_APPEND);*/
+
+		foreach ($order->get_items() as $item_id => $item ){
+
+			$item_data = $item->get_data();
+			/*file_put_contents(get_template_directory() . '/somefilename.txt', print_r($item_data, true), FILE_APPEND);*/
+
+			if ($item_data['name'] == "Pick Pack"){
+
+				$tax = $this->get_state_tax($billing_state);
+
+				$item->set_total(number_format((float)$eco_bag_price * $tax * $item_data['quantity'], 2, '.', ''));
+			}
+		}
+
+		$order->calculate_totals();
+ 		
+
+ 		$order->save();
+		
+
+		
 	}
 
 	public function display_pick_pack_info(){
